@@ -1,0 +1,17 @@
+# ninja log v5
+6	579	1717834294784580372	tttplayer/CMakeFiles/tttplayer.dir/my_player.cpp.o	98027fdea67bb9e7
+7	686	1717830583487212964	tttplayer/CMakeFiles/tttplayer.dir/TimPlayer.cpp.o	d65a9cf55b8e21a5
+5	689	1714420831750171980	tttlib/CMakeFiles/tttlib.dir/composed_observer.cpp.o	6b50948a2a7fa4ec
+6	590	1717834327725821618	tttplayer/CMakeFiles/main.dir/main.cpp.o	dec072ecac435a23
+5	705	1714420831765994685	tttlib/CMakeFiles/tttlib.dir/game_engine.cpp.o	c851aa0cef676c1e
+6	713	1717831503851967834	tttplayer/CMakeFiles/tttplayer.dir/Myplayer.cpp.o	d16ba93be2c5622b
+5	660	1714420831719079289	tttlib/CMakeFiles/tttlib.dir/events.cpp.o	15895d82061811e2
+7	694	1717830583496565813	tttplayer/CMakeFiles/tttplayer.dir/Analyzer.cpp.o	e2b8f71d54aa968d
+0	67	1717944920761394895	build.ninja	13303ce0c92958c0
+5	694	1714420831756579330	tttlib/CMakeFiles/tttlib.dir/basic_fields.cpp.o	f9466e78f75e4a20
+591	633	1717834327771336482	tttplayer/main	34950949fa00dd6f
+6	47	1717830582853354000	tttlib/libtttlib.a	91d36d329a7f878
+579	600	1717834294810322000	tttplayer/libtttplayer.a	efcd3706f544d09c
+7	655	1714915274208446137	tttplayer/CMakeFiles/tttplayer.dir/PythonPlayer.cpp.o	2b8a95903b816fdc
+12	818	1717945076436024400	tttplayer/CMakeFiles/tttplayer.dir/TimPlayer.cpp.o	d65a9cf55b8e21a5
+12	1034	1717945214634775436	tttplayer/CMakeFiles/main.dir/main.cpp.o	dec072ecac435a23

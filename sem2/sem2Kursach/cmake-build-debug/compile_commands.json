@@ -1,0 +1,92 @@
+[
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttlib/CMakeFiles/tttlib.dir/events.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttlib/events.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/events.cpp",
+  "output": "tttlib/CMakeFiles/tttlib.dir/events.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttlib/CMakeFiles/tttlib.dir/basic_fields.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttlib/basic_fields.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/basic_fields.cpp",
+  "output": "tttlib/CMakeFiles/tttlib.dir/basic_fields.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttlib/CMakeFiles/tttlib.dir/composed_observer.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttlib/composed_observer.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/composed_observer.cpp",
+  "output": "tttlib/CMakeFiles/tttlib.dir/composed_observer.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttlib/CMakeFiles/tttlib.dir/game_engine.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttlib/game_engine.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/game_engine.cpp",
+  "output": "tttlib/CMakeFiles/tttlib.dir/game_engine.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/.. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttlib/tests/CMakeFiles/test_events.dir/test_events.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/test_events.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/test_events.cpp",
+  "output": "tttlib/tests/CMakeFiles/test_events.dir/test_events.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/.. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttlib/tests/CMakeFiles/test_fields.dir/test_fields.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/test_fields.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/test_fields.cpp",
+  "output": "tttlib/tests/CMakeFiles/test_fields.dir/test_fields.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/.. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttlib/tests/CMakeFiles/test_engine.dir/test_engine.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/test_engine.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttlib/tests/test_engine.cpp",
+  "output": "tttlib/tests/CMakeFiles/test_engine.dir/test_engine.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/CMakeFiles/tttplayer.dir/my_player.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/my_player.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/my_player.cpp",
+  "output": "tttplayer/CMakeFiles/tttplayer.dir/my_player.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/CMakeFiles/tttplayer.dir/Analyzer.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/Analyzer.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/Analyzer.cpp",
+  "output": "tttplayer/CMakeFiles/tttplayer.dir/Analyzer.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/CMakeFiles/tttplayer.dir/TimPlayer.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/TimPlayer.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/TimPlayer.cpp",
+  "output": "tttplayer/CMakeFiles/tttplayer.dir/TimPlayer.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/CMakeFiles/tttplayer.dir/PythonPlayer.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/PythonPlayer.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/PythonPlayer.cpp",
+  "output": "tttplayer/CMakeFiles/tttplayer.dir/PythonPlayer.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/CMakeFiles/tttplayer.dir/Myplayer.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/Myplayer.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/Myplayer.cpp",
+  "output": "tttplayer/CMakeFiles/tttplayer.dir/Myplayer.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/CMakeFiles/tttplayer.dir/Mihali.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/Mihali.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/Mihali.cpp",
+  "output": "tttplayer/CMakeFiles/tttplayer.dir/Mihali.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/CMakeFiles/main.dir/main.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/main.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/main.cpp",
+  "output": "tttplayer/CMakeFiles/main.dir/main.cpp.o"
+},
+{
+  "directory": "/Users/timofejovcinnikov/CLionProjects/ttt/cmake-build-debug",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/tests/.. -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/tests/../../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/../tttlib -I/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/. -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include/c++/v1 -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/14.0.3/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/usr/include -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include  -O0 -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -fcolor-diagnostics -o tttplayer/tests/CMakeFiles/mytest.dir/my_test.cpp.o -c /Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/tests/my_test.cpp",
+  "file": "/Users/timofejovcinnikov/CLionProjects/ttt/tttplayer/tests/my_test.cpp",
+  "output": "tttplayer/tests/CMakeFiles/mytest.dir/my_test.cpp.o"
+}
+]
