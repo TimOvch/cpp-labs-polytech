@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "2EAB7DB4-AAB9-41DD-A713-CFC3C0605C4B"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3E69F9AE-C040-434D-B7C5-0B35F746F295"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4FF769C1-291D-4361-B6F9-143A0895D4EB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FE9D8DBF-BC04-4256-A27B-D88753561C00"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C849884E-A1A1-4920-B82D-67DF63238C14"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "C849884E-A1A1-4920-B82D-67DF63238C14 - 6fa8a4419dec33eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "190"
+                  endingLineNumber = "190"
+                  offsetFromSymbolStart = "476">
+               </Location>
+               <Location
+                  uuid = "C849884E-A1A1-4920-B82D-67DF63238C14 - 6fa8a4419dec33eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "190"
+                  endingLineNumber = "190"
+                  offsetFromSymbolStart = "564">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1842A0B3-E832-474B-9B4A-6D9CD885CD83"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "1842A0B3-E832-474B-9B4A-6D9CD885CD83 - 6fa8a4419dec3d02"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "420">
+               </Location>
+               <Location
+                  uuid = "1842A0B3-E832-474B-9B4A-6D9CD885CD83 - 6fa8a4419dec3d02"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "472">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CE5C528C-ACBC-4BD4-B658-E2F7F68C7CC3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BC28FAB8-A7F3-4658-B33E-7EDF50621A83"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9E3D7510-AB38-420C-9228-1B6114CB6364"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "9E3D7510-AB38-420C-9228-1B6114CB6364 - 6fa8a4419decc9fd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "268"
+                  endingLineNumber = "268"
+                  offsetFromSymbolStart = "1732">
+               </Location>
+               <Location
+                  uuid = "9E3D7510-AB38-420C-9228-1B6114CB6364 - 6fa8a4419deccb14"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "259"
+                  endingLineNumber = "259"
+                  offsetFromSymbolStart = "1848">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7DEEAF0E-04A5-46F6-8335-871C5934D2E8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E3E4E174-0998-4EB2-B836-3D402129C631"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AC92DB5E-8201-4CD9-A467-AFB80094197D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "40247CBA-A17B-4BA3-B6C7-5B6B80762952"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../&#x41f;&#x440;&#x43e;&#x433;&#x430;/&#x41b;&#x430;&#x431;&#x44b; &#x432;&#x442;&#x43e;&#x440;&#x43e;&#x438;&#x306; &#x441;&#x435;&#x43c;/lab1/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "40247CBA-A17B-4BA3-B6C7-5B6B80762952 - 6fa8a4419dec229a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "77"
+                  endingLineNumber = "77"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "40247CBA-A17B-4BA3-B6C7-5B6B80762952 - 6fa8a4419dec2d63"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "sem2lab1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/%D0%9F%D1%80%D0%BE%D0%B3%D0%B0/%D0%9B%D0%B0%D0%B1%D1%8B%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B8%CC%86%20%D1%81%D0%B5%D0%BC/lab1/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

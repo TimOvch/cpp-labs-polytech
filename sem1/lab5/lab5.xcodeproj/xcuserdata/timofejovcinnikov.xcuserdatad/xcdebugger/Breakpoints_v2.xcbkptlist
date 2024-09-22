@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "2EEC64CB-27AC-46B1-9BC4-F0D62FD9B567"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "568F0173-6469-46DB-9E2C-6D4A62E475B1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B48DEE8D-1DA2-4A23-BC08-046109C16C0C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C8FBB10F-727E-47D8-A0C4-8D41113D5558"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "C8FBB10F-727E-47D8-A0C4-8D41113D5558 - 8b7ea99faab00c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "186"
+                  endingLineNumber = "186"
+                  offsetFromSymbolStart = "372">
+               </Location>
+               <Location
+                  uuid = "C8FBB10F-727E-47D8-A0C4-8D41113D5558 - 8b7ea99faab00c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "186"
+                  endingLineNumber = "186"
+                  offsetFromSymbolStart = "380">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ADE20028-5DA9-40A4-B593-2D151FDD4105"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "ADE20028-5DA9-40A4-B593-2D151FDD4105 - 8b7ea99faab0710"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "230"
+                  endingLineNumber = "230"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "ADE20028-5DA9-40A4-B593-2D151FDD4105 - 8b7ea99faab0468"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "222"
+                  endingLineNumber = "222"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "ADE20028-5DA9-40A4-B593-2D151FDD4105 - 8b7ea99faab0449"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "221"
+                  endingLineNumber = "221"
+                  offsetFromSymbolStart = "1264">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0E551F55-FFCA-4669-8727-3C3E6EB53496"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "97E1E132-8660-4DED-AFDB-E8D896FE83B3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "97E1E132-8660-4DED-AFDB-E8D896FE83B3 - 8b7ea99faab0923"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "216">
+               </Location>
+               <Location
+                  uuid = "97E1E132-8660-4DED-AFDB-E8D896FE83B3 - 8b7ea99faab08c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "248"
+                  endingLineNumber = "248"
+                  offsetFromSymbolStart = "252">
+               </Location>
+               <Location
+                  uuid = "97E1E132-8660-4DED-AFDB-E8D896FE83B3 - 8b7ea99faab08a7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "251"
+                  endingLineNumber = "251"
+                  offsetFromSymbolStart = "276">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "56645B5A-AF54-42D5-B027-EE59E752C82A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "main()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "56645B5A-AF54-42D5-B027-EE59E752C82A - 8b7ea99faab07ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "228"
+                  endingLineNumber = "228"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "56645B5A-AF54-42D5-B027-EE59E752C82A - 8b7ea99faab07ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "lab5"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timofejovcinnikov/Desktop/%D0%A3%D1%87%D0%B5%D0%B1%D0%B0/xcode-labs/lab5/lab5/lab5.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "228"
+                  endingLineNumber = "228"
+                  offsetFromSymbolStart = "100">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "380B19B5-CA32-4176-A41B-678F2E7DC8DE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "lab5/lab5.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

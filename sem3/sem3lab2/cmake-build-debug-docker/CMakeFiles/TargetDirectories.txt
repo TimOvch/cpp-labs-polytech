@@ -1,0 +1,3 @@
+/tmp/sem3lab2/cmake-build-debug-docker/CMakeFiles/sem3lab2.dir
+/tmp/sem3lab2/cmake-build-debug-docker/CMakeFiles/edit_cache.dir
+/tmp/sem3lab2/cmake-build-debug-docker/CMakeFiles/rebuild_cache.dir
