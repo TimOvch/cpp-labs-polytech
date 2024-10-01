@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab3/cmake-build-debug"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab3/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -479,7 +479,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab3/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab3/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab3"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab3"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1111,7 +1111,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab3/cmake-build-debug"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab3/cmake-build-debug"
 		},
 		{
 			"name" : "sem3lab3_IS_TOP_LEVEL",
@@ -1135,7 +1135,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab3"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab3"
 		}
 	],
 	"kind" : "cache",

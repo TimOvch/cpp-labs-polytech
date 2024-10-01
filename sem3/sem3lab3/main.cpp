@@ -106,14 +106,14 @@ int main()
 		
 		cout << "\nInteger Stack has: " << stack.GetSize() << " elements";
 
-//		stack.Push(4);	// Здесь должно быть "выброшено" исключение
+		stack.Push(4);	// Здесь должно быть "выброшено" исключение
 
 		cout << "\nInteger Stack pops: " << stack.Pop();
 		cout << "\nInteger Stack pops: " << stack.Pop();
 		
 		cout << "\nInteger Stack has: " << stack.GetSize() << " elements";
 		stack.Pop();
-		// stack.Pop();		// Здесь должно быть "выброшено" исключение
+		 stack.Pop();		// Здесь должно быть "выброшено" исключение
 		stack.Push(2);
 		
 		// int i = stack[3];	// Здесь должно быть "выброшено" исключение
