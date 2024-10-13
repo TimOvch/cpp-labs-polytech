@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab4/cmake-build-debug"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab1/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -154,8 +154,8 @@
 					"value" : "CXX compiler"
 				}
 			],
-			"type" : "FILEPATH",
-			"value" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++"
+			"type" : "STRING",
+			"value" : "/usr/bin/clang"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS",
@@ -479,7 +479,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab4/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab1/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab4"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab1"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -819,7 +819,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "sem3lab4"
+			"value" : "sem3lab1"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1102,7 +1102,7 @@
 			"value" : "FALSE"
 		},
 		{
-			"name" : "sem3lab4_BINARY_DIR",
+			"name" : "sem3lab1_BINARY_DIR",
 			"properties" : 
 			[
 				{
@@ -1111,10 +1111,10 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab4/cmake-build-debug"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab1/cmake-build-debug"
 		},
 		{
-			"name" : "sem3lab4_IS_TOP_LEVEL",
+			"name" : "sem3lab1_IS_TOP_LEVEL",
 			"properties" : 
 			[
 				{
@@ -1126,7 +1126,7 @@
 			"value" : "ON"
 		},
 		{
-			"name" : "sem3lab4_SOURCE_DIR",
+			"name" : "sem3lab1_SOURCE_DIR",
 			"properties" : 
 			[
 				{
@@ -1135,7 +1135,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/timofejovcinnikov/CLionProjects/sem3lab4"
+			"value" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab1"
 		}
 	],
 	"kind" : "cache",

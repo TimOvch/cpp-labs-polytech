@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/timofejovcinnikov/CLionProjects/sem3lab4/cmake-build-debug",
-		"source" : "/Users/timofejovcinnikov/CLionProjects/sem3lab4"
+		"build" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab4/cmake-build-debug",
+		"source" : "/Users/timofejovcinnikov/cpp-labs-polytech/sem3/sem3lab4"
 	},
 	"version" : 
 	{
