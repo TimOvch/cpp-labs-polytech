@@ -13,10 +13,11 @@ int main(int argc, char *argv[])
     QScrollBar *scrollBar = new QScrollBar(Qt::Horizontal);
     QLabel *label = new QLabel("Dynamic Widgets");
 
+    collection.AddWidget(scrollBar);
+    collection.AddWidget(slider);
+    collection.AddWidget(label);
     collection.AddWidget(slider);
     collection.AddWidget(spinBox);
-    collection.AddWidget(scrollBar);
-    collection.AddWidget(label);
 
     collection.ConnectWidgets();
 

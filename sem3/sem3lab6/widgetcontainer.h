@@ -18,6 +18,7 @@ private:
 
     QVBoxLayout *layout;
     QVector<QWidget*> widgets;
+    QVector<QWidget*> labels;
 
 public:
     WidgetContainer(QWidget *parent = nullptr);

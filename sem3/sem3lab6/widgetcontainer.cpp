@@ -10,36 +10,37 @@ WidgetContainer::WidgetContainer(QWidget *parent)
 
 void WidgetContainer::ConnectWidgets()
 {
-    int vecLen = widgets.length();
+    int widLen = widgets.length();
 
-    for(int i = 0; i<vecLen; i++){
-        for(int j = 0; j < vecLen; j++){
-            QWidget *widget1 = widgets[i];
-            QWidget *widget2 = widgets[j];
+    for(int i = 0; i<widLen-1; i++){
+        QWidget *widget1 = widgets[i];
+        QWidget *widget2 = widgets[i+1];
 
-            const QMetaObject *meta1 = widget1->metaObject();
-            const QMetaObject *meta2 = widget2->metaObject();
+        connect(widget1, SIGNAL(valueChanged(int)), widget2, SLOT(setValue(int)));
+        connect(widget2, SIGNAL(valueChanged(int)), widget1, SLOT(setValue(int)));
 
-            if (QString(meta1->className()) == "QSlider" && QString(meta2->className()) == "QSpinBox") {
-                connect(widget1, SIGNAL(valueChanged(int)), widget2, SLOT(setValue(int)));
-            } else if (QString(meta1->className()) == "QSpinBox" && QString(meta2->className()) == "QSlider") {
-                connect(widget1, SIGNAL(valueChanged(int)), widget2, SLOT(setValue(int)));
-            } else if (QString(meta1->className()) == "QScrollBar" && QString(meta2->className()) == "QSlider") {
-                connect(widget1, SIGNAL(valueChanged(int)), widget2, SLOT(setValue(int)));
-            } else if (QString(meta1->className()) == "QSlider" && QString(meta2->className()) == "QScrollBar") {
-                connect(widget1, SIGNAL(valueChanged(int)), widget2, SLOT(setValue(int)));
-            } else if (QString(meta1->className()) == "QScrollBar" && QString(meta2->className()) == "QLabel") {
-                connect(widget1, SIGNAL(valueChanged(int)), widget2, SLOT(setNum(int)));
-            }
+    }
 
+    if(widLen!= 0){
+        int labLen = labels.length();
 
-
+        for(int i = 0; i< labLen; i++){
+            QWidget *label = labels[i];
+            connect(widgets[0], SIGNAL(valueChanged(int)), label, SLOT(setNum(int)));
         }
     }
+
 }
 
 void WidgetContainer::AddWidget(QWidget *wid)
 {
+    const QMetaObject *meta = wid->metaObject();
+    if(QString(meta->className()) == QString("QLabel")){
+        labels.append(wid);
+    } else {
+        widgets.append(wid);
+    }
     widgets.append(wid);
     layout->addWidget(wid);
 }
+
