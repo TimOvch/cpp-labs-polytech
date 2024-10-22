@@ -1,6 +1,6 @@
-#include "mywidget.h"
-
 #include <QApplication>
+#include "shapeswindow.h"
+#include "shapesgraphics.h"
 
 // С использованием библиотеки Qt реализовать графический класс содержащий коллекцию фигур: прямоугольников, треугольников, эллипсов.
 // В классе должны быть методы для добавления новых фигур и удаления старых. Реализовать графический интерфейс позволяющий проверить работу этих методов.
@@ -17,8 +17,18 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MyWidget widg;
 
-    widg.show();
+    QWidget bigboy;
+
+    ShapesWindow* widget = new ShapesWindow(&bigboy);
+    widget->setWindowFlags(Qt::Window);
+    widget->setWindowTitle("With QPainter");
+    widget->show();
+
+    ShapesGraphics* graphics = new ShapesGraphics(&bigboy);
+    graphics->setWindowFlags(Qt::Window);
+    graphics->setWindowTitle("With QGraphics");
+    graphics->show();
+
     return a.exec();
 }

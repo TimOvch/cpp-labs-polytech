@@ -9,11 +9,21 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ellipse.cpp \
     main.cpp \
-    mywidget.cpp
+    rect.cpp \
+    shape.cpp \
+    shapesgraphics.cpp \
+    shapeswindow.cpp \
+    triangle.cpp
 
 HEADERS += \
-    mywidget.h
+    ellipse.h \
+    rect.h \
+    shape.h \
+    shapesgraphics.h \
+    shapeswindow.h \
+    triangle.h
 
 FORMS +=
 
