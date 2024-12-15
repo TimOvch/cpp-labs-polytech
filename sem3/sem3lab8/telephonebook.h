@@ -1,4 +1,4 @@
-#ifndef TELEPHONEBOOK_H
+  #ifndef TELEPHONEBOOK_H
 #define TELEPHONEBOOK_H
 
 // Написать приложение телефонный справочник с использованием библиотеки Qt:
@@ -46,6 +46,8 @@ public slots:
     void deleteRow();
 
     void search();
+    void filter();
+    void resetFilter();
 
     void saveToFileJSON();
     void readFromFileJSON();
@@ -71,5 +73,22 @@ private:
     QLineEdit *lineEdit;
     QComboBox *comboBox;
 };
+
+class FilterDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    FilterDialog(QWidget *parent = nullptr);
+    QString getSearchText() const;
+    int getSelectedColumn() const;
+
+private slots:
+    void onFilterClicked();
+
+private:
+    QLineEdit *lineEdit;
+    QComboBox *comboBox;
+};
+
 
 #endif // TELEPHONEBOOK_H

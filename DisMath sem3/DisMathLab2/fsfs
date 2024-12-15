@@ -1,0 +1,74 @@
+// SymbolNumber SymbolNumber::NOD(const SymbolNumber &another)
+// {
+//     QString n1 = number, n2 = another.number;
+
+//     while (true) {
+//         if((n1 == "a") && n2 == "a") break;
+//         SymbolNumber sn1(n1), sn2(n2);
+//         if(checkLess(n2, n1)){
+//             n1 = sn1.rem(sn2).getNum();
+//         } else{
+//             n2 = sn2.rem(sn1).getNum();
+//         }
+//     }
+
+
+//     return sum(n1, n2);
+// }
+
+// SymbolNumber SymbolNumber::NOK(const SymbolNumber &another)
+// {
+//     QString n1 = number, n2 = another.number;
+
+//     if(n1[0] == '-'){
+//         n1.removeFirst();
+//     }
+
+//     if(n2[0] == '-'){
+//         n1.removeFirst();
+//     }
+
+//     if (n1 == "a" || n2 == "a") return QString("a");
+
+//     SymbolNumber sn1(n1), sn2(n2);
+
+//     return sn1*sn2 / sn1.NOD(sn2);
+// }
+
+
+int  Calculator::NOD(int  n1, int  n2)
+{
+    while (n1!= 0 && n2 != 0) {
+        if(n1 > n2){
+            n1 = n1%n2;
+        } else{
+            n2 = n2%n1;
+        }
+    }
+    return n1+n2;
+}
+
+int  Calculator::NOK(const int  &n1, const int  &n2)
+{
+    if (n1 == 0 || n2 == 0) return 0;
+    return std::abs(n1 * n2) / NOD(std::abs(n1), std::abs(n2));
+}
+
+else if (operation == "НОД") {
+        result = NOD(std::abs(num1), std::abs(num2));
+        symbRes = symbNum1.NOD(symbNum2);
+    } else if (operation == "НОК") {
+        result = NOK(num1, num2);
+    }
+
+
+operationCombo->addItem("НОД");
+operationCombo->addItem("НОК");
+
+
+SymbolNumber NOD(const SymbolNumber& another) ;
+SymbolNumber NOK(const SymbolNumber& another) ;
+
+
+int  NOD(int  n1, int  n2);
+int  NOK(const int & n1, const int & n2);

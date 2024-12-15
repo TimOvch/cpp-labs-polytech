@@ -100,6 +100,8 @@ TelephoneBook::TelephoneBook(QWidget *parent)
     ptb->addAction("Добавить контакт в конец", this, &TelephoneBook::addRow);
     ptb->addAction("Удалить выбранный контакт", this, &TelephoneBook::deleteRow);
     ptb->addAction("Поиск контакта", this, &TelephoneBook::search);
+    ptb->addAction("Фильтр", this, &TelephoneBook::filter);
+    ptb->addAction("Убрать фильтрацию",this, &TelephoneBook::resetFilter);
     addToolBar(Qt::TopToolBarArea, ptb);
 
     menuBar()->addMenu(fileMenu);
@@ -109,6 +111,9 @@ TelephoneBook::TelephoneBook(QWidget *parent)
 
     int rowCount = tableWidget->rowCount();
     tableWidget->insertRow(rowCount);
+
+
+    tableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 void TelephoneBook::addRow()
@@ -133,6 +138,7 @@ void TelephoneBook::search()
     if(dialog.exec() == QDialog::Accepted) {
         Columns column = (Columns)dialog.getSelectedColumn();
         QString searchText = dialog.getSearchText();
+        tableWidget->clearSelection();
         for (int row = 0; row < tableWidget->rowCount(); ++row) {
             QTableWidgetItem *item = tableWidget->item(row, column);
             if (item && item->text().contains(searchText, Qt::CaseInsensitive)) {
@@ -140,7 +146,36 @@ void TelephoneBook::search()
                 return;
             }
         }
-        QMessageBox::information(this, "Результат поиска", "Запись не найдена.");
+        QMessageBox::warning(this, "Ошибка", "Контакт с искомым значением отсутсвует.");
+    }
+}
+
+void TelephoneBook::filter()
+{
+    FilterDialog dialog(this);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        int column = dialog.getSelectedColumn();
+        QString filterText = dialog.getSearchText();
+
+
+        for (int row = 0; row < tableWidget->rowCount(); ++row) {
+            tableWidget->setRowHidden(row, true);
+        }
+
+        for (int row = 0; row < tableWidget->rowCount(); ++row) {
+            QTableWidgetItem *item = tableWidget->item(row, column);
+            if (item && item->text().contains(filterText, Qt::CaseInsensitive)) {
+                tableWidget->setRowHidden(row, false);
+            }
+        }
+    }
+}
+
+void TelephoneBook::resetFilter()
+{
+    for (int row = 0; row < tableWidget->rowCount(); ++row) {
+        tableWidget->setRowHidden(row, false);
     }
 }
 
@@ -238,21 +273,21 @@ void TelephoneBook::checkInput(QTableWidgetItem *item)
     if(text.isEmpty()) return;
     switch (column) {
     case Name:
-        regex.setPattern("^\\s*[A-Za-zА-Яа-яЁё0-9 ][A-Za-zА-Яа-яЁё0-9\\- ]*[A-Za-zА-Яа-яЁё0-9]\\s*$");
+        regex.setPattern("^[A-Za-zА-Яа-яЁё]+(?:[-\\s][A-Za-zА-Яа-яЁё0-9]+)*[A-Za-zА-Яа-яЁё0-9]$");
         if (!regex.match(text).hasMatch()) {
             showError("Имя может содержать только буквы и цифры различных алфавитов, а также дефис и пробел, но при этом не может начинаться или оканчиваться на дефис.");
             item->setText("");
         }
         break;
     case Surname:
-        regex.setPattern("^\\s*[A-Za-zА-Яа-яЁё0-9 ][A-Za-zА-Яа-яЁё0-9\\- ]*[A-Za-zА-Яа-яЁё0-9]\\s*$");
+        regex.setPattern("^[A-Za-zА-Яа-яЁё]+(?:[-\\s][A-Za-zА-Яа-яЁё0-9]+)*[A-Za-zА-Яа-яЁё0-9]$");
         if (!regex.match(text).hasMatch()) {
             showError("Фамилия может содержать только буквы и цифры различных алфавитов, а также дефис и пробел, но при этом не может начинаться или оканчиваться на дефис.");
             item->setText("");
         }
         break;
     case FathName:
-        regex.setPattern("^\\s*[A-Za-zА-Яа-яЁё0-9 ][A-Za-zА-Яа-яЁё0-9\\- ]*[A-Za-zА-Яа-яЁё0-9]\\s*$");
+        regex.setPattern("^[A-Za-zА-Яа-яЁё]+(?:[-\\s][A-Za-zА-Яа-яЁё0-9]+)*[A-Za-zА-Яа-яЁё0-9]$");
         if (!regex.match(text).hasMatch()) {
             showError("Отчество может содержать только буквы и цифры различных алфавитов, а также дефис и пробел, но при этом не может начинаться или оканчиваться на дефис.");
             item->setText("");
@@ -292,7 +327,6 @@ void TelephoneBook::checkInput(QTableWidgetItem *item)
 SearchDialog::SearchDialog(QWidget *parent) : QDialog(parent) {
     setWindowTitle("Поиск");
 
-    // Элементы интерфейса
     QFormLayout *layout = new QFormLayout(this);
     comboBox = new QComboBox(this);
     comboBox->addItem("Имя");
@@ -320,5 +354,39 @@ int SearchDialog::getSelectedColumn() const {
 }
 
 void SearchDialog::onSearchClicked() {
+    accept();
+}
+
+FilterDialog::FilterDialog(QWidget *parent)
+    : QDialog(parent) {
+    setWindowTitle("Фильтр контактов");
+
+    QFormLayout *layout = new QFormLayout(this);
+    comboBox = new QComboBox(this);
+    comboBox->addItem("Имя");
+    comboBox->addItem("Фамилия");
+    comboBox->addItem("Отчество");
+    comboBox->addItem("Email");
+    comboBox->addItem("Телефон");
+
+    lineEdit = new QLineEdit(this);
+    QPushButton *filterButton = new QPushButton("Применить фильтр", this);
+    connect(filterButton, &QPushButton::clicked, this, &FilterDialog::onFilterClicked);
+
+    layout->addRow("Выберите колонку:", comboBox);
+    layout->addRow("Введите текст для фильтрации:", lineEdit);
+    layout->addWidget(filterButton);
+    setLayout(layout);
+}
+
+QString FilterDialog::getSearchText() const {
+    return lineEdit->text();
+}
+
+int FilterDialog::getSelectedColumn() const {
+    return comboBox->currentIndex();
+}
+
+void FilterDialog::onFilterClicked() {
     accept();
 }
