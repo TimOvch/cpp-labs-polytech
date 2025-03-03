@@ -24,6 +24,7 @@ ShapesGraphics::ShapesGraphics(QWidget* parent)
     : QGraphicsView(parent)
 {
     scene = new QGraphicsScene(this);
+    scene->setSceneRect(0,0,1480,620);
     setScene(scene);
     setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
     setRenderHint(QPainter::Antialiasing);
@@ -52,11 +53,8 @@ void ShapesGraphics::mousePressEvent(QMouseEvent *event)
 
 void ShapesGraphics::mouseReleaseEvent(QMouseEvent *event)
 {
-    lastActiveItem = scene->itemAt(mapToScene(event->pos()), QTransform());
-    if(lastActiveItem != nullptr){
-        emit posChanged(itemToId[lastActiveItem], lastActiveItem->scenePos().x(), lastActiveItem->scenePos().y());
-    }
     mouseHold = 0;
+    if(lastActiveItem) emit selectFig(lastActiveItem->scenePos().x(), lastActiveItem->scenePos().y());
     QGraphicsView::mouseReleaseEvent(event);
 }
 
@@ -68,6 +66,10 @@ void ShapesGraphics::mouseMoveEvent(QMouseEvent *event) {
             if(lines[i]->contains(lastActiveItem)){
                 lines[i]->updateLine();
             }
+        }
+        lastActiveItem = scene->itemAt(mapToScene(event->pos()), QTransform());
+        if(lastActiveItem){
+            emit posChangedIk(itemToId[lastActiveItem], lastActiveItem->scenePos().x(), lastActiveItem->scenePos().y());
         }
     }
 }

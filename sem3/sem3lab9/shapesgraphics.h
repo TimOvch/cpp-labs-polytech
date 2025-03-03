@@ -61,7 +61,8 @@ public slots:
     void unMarkAll();
 
 signals:
-    void posChanged(const int& id, const int& x, const int &y);
+    void posChangedIk(const int& id, const int& x, const int &y);
+    void selectFig(const int &x , const int &y);
 };
 
 #endif // SHAPESGRAPHICS_H

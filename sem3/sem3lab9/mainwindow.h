@@ -52,6 +52,7 @@ public slots:
     void filterTriangles();
     void unFilter();
     void startFilter();
+    void selectFig(const int &x , const int &y );
 
     void markRelated();
 

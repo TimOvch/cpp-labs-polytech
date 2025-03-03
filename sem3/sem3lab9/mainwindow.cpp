@@ -6,6 +6,7 @@
 #include <QCheckBox>
 #include <QFrame>
 #include <QLabel>
+#include <QItemSelection>
 
 #include "mainwindow.h"
 
@@ -156,7 +157,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(submitFilter, &QPushButton::clicked, this, &MainWindow::startFilter);
     connect(clearFilter, &QPushButton::clicked, this, &MainWindow::unFilter);
     connect(markSelected, &QPushButton::clicked, this, &MainWindow::markRelated);
-    connect(graphics , &ShapesGraphics::posChanged, this, &MainWindow::posChanged);
+    connect(graphics , &ShapesGraphics::posChangedIk, this, &MainWindow::posChanged);
+    connect(graphics , &ShapesGraphics::selectFig, this, &MainWindow::selectFig);
 
     tableView->setItemDelegate(new ColorDelegate);
 
@@ -571,6 +573,22 @@ void MainWindow::startFilter()
     }
 }
 
+void MainWindow::selectFig(const int &x , const int &y )
+{
+    for (int row = 0; row < model->rowCount(); ++row) {
+        QModelIndex index1 = model->index(row, 4);
+        QModelIndex index2 = model->index(row, 5);
+        if ((model->data(index1).toString().toInt() > x-10) && (model->data(index1).toString().toInt() < x+10) && (model->data(index2).toString().toInt() < y+10) && (model->data(index2).toString().toInt() > y-10)) {
+            tableView->selectionModel()->clearSelection();
+            tableView->selectRow(row);
+            QItemSelection selection;
+            selection.select(model->index(row, 4), model->index(row, model->columnCount() - 1));
+            tableView->selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+            break;
+        }
+    }
+}
+
 void MainWindow::markRelated()
 {
     if(markActive){
@@ -622,7 +640,6 @@ void MainWindow::posChanged(const int &id, const int& x, const int &y)
         QMessageBox::warning(this, "Ошибка", "Не удалось обновить позицию.");
     }
     model->select();
-    model->submitAll();
 }
 
 
