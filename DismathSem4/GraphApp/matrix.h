@@ -7,11 +7,9 @@
 class Matrix {
 public:
     Matrix();
-
     Matrix(int r, int c, int initValue = 0);
-
-
     Matrix(const Matrix& other);
+    Matrix(const QVector<QVector<int> >& vec);
 
     Matrix& operator=(const Matrix& other);
     Matrix operator+(const Matrix& other) const;
@@ -45,6 +43,10 @@ public:
 
     void setElement(const int &row, const int &col, const int& value);
     void setData(const QVector<QVector<int>>& mat);
+
+    void setCols(int newCols);
+
+    void setRows(int newRows);
 
 private:
     int rows, cols;

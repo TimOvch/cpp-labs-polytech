@@ -10,15 +10,19 @@ CONFIG += c++17
 
 SOURCES += \
     abstractgraph.cpp \
+    distribution.cpp \
+    graphapp.cpp \
+    graphview.cpp \
     main.cpp \
-    mainwindow.cpp \
     matrix.cpp \
     orientedgraph.cpp \
     unorientedgraph.cpp
 
 HEADERS += \
     abstractgraph.h \
-    mainwindow.h \
+    distribution.h \
+    graphapp.h \
+    graphview.h \
     matrix.h \
     orientedgraph.h \
     unorientedgraph.h

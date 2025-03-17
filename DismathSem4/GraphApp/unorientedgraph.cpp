@@ -3,31 +3,28 @@
 
 UnorientedGraph::UnorientedGraph(const int &vershini)
     : AbstractGraph(vershini)
-{}
+{
+    type = "unoriented";
+}
 
 void UnorientedGraph::graphGenerate()
 {
-    acycleGraphGenerate();
 
-    int additionalEdges = QRandomGenerator::global()->bounded((p*(p-1))/2 - p - 1);
-
-    for (int i = 0; i < additionalEdges; ++i) {
-        int u = QRandomGenerator::global()->bounded(p);
-        int v = QRandomGenerator::global()->bounded(p);
-
-        if (u != v && adjacency.getElem(u,v) == 0 && adjacency.getElem(v,u) == 0) {
-            addEdge(u, v);
-        } else{
-            additionalEdges++;
-        }
-    }
 }
 
 void UnorientedGraph::acycleGraphGenerate()
 {
-    for (int i = 1; i < p; ++i) {
-        int parent = QRandomGenerator::global()->bounded(i);
-        addEdge(parent, i);
+    generatePowers();
+
+    for (int i = 0; i < p ; i++) {
+        for (int k = 0; k < powers[p-i-1] ; k++) {
+            int j = QRandomGenerator::global()->bounded(p);
+            if ( i != j && i < j && adjacency.getElem(i,j) != 1) {
+                addEdge(i,j);
+            } else{
+                k--;
+            }
+        }
     }
 }
 

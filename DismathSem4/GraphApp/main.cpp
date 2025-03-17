@@ -1,12 +1,12 @@
-#include "mainwindow.h"
 #include "matrix.h"
 #include "QDebug"
 #include <QApplication>
+#include "graphapp.h"
 
 int main(int argc, char *argv[])
 {
-    // QApplication a(argc, argv);
-    // MainWindow w;
-    // w.show();
-    // return a.exec();
+    QApplication app(argc, argv);
+    GraphApp window;
+    window.show();
+    return app.exec();
 }

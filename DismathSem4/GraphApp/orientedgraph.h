@@ -3,16 +3,16 @@
 
 #include "abstractgraph.h"
 
-class OrientedGraph : AbstractGraph
+class OrientedGraph : public AbstractGraph
 {
 public:
     OrientedGraph(const int& vershini);
-    virtual ~OrientedGraph();
+    virtual ~OrientedGraph(){}
 
-    void graphGenerate();
-    void acycleGraphGenerate();
+    virtual void graphGenerate() override;
+    virtual void acycleGraphGenerate() override;
 
-    void addEdge(const int& v, const int& u);
+    virtual void addEdge(const int& v, const int& u) override;
 
 };
 

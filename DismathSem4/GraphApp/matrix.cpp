@@ -13,6 +13,13 @@ Matrix::Matrix(const Matrix &other)
     : rows(other.rows), cols(other.cols), data(other.data)
 {}
 
+Matrix::Matrix(const QVector<QVector<int> > &vec)
+{
+    data = vec;
+    rows = vec.size();
+    cols = vec[0].size();
+}
+
 Matrix &Matrix::operator=(const Matrix &other) {
     if (this != &other) {
         rows = other.rows;
@@ -112,19 +119,36 @@ Matrix Matrix::shimbelMult(const Matrix &other, const bool& max) const
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < other.cols; ++j) {
             for (int k = 0; k < cols; ++k) {
+                int sum = data[i][k] + other.data[k][j];
+                if((data[i][k] == 0) || (other.data[k][j] == 0)){
+                    sum = 0;
+                }
                 if(max){
-                    result.data[i][j] = std::max(result.data[i][j] ,data[i][k] + other.data[k][j]);
+                    result.data[i][j] = std::max(result.data[i][j] ,sum);
                 } else {
-                    if ((result.data[i][j] == 0) || (data[i][k] + other.data[k][j] == 0)){
-                        result.data[i][j] = result.data[i][j] = std::max(result.data[i][j] ,data[i][k] + other.data[k][j]);
-                    } else{
-                        result.data[i][j] = std::min(result.data[i][j] ,data[i][k] + other.data[k][j]);
+                    if (result.data[i][j] == 0){
+                        result.data[i][j] = sum;
+                    } else if(sum == 0){
+                        result.data[i][j] = result.data[i][j];
+                    }
+                    else{
+                        result.data[i][j] = std::min(result.data[i][j] ,sum);
                     }
                 }
             }
         }
     }
     return result;
+}
+
+int Matrix::getRows() const
+{
+    return rows;
+}
+
+int Matrix::getCols() const
+{
+    return cols;
 }
 
 QDebug operator<<(QDebug dbg, const Matrix& m) {
@@ -147,7 +171,7 @@ QVector<QVector<int> > Matrix::getData() const
     return data;
 }
 
-void Matrix::setElement(const int &row, const int &col, const intя &value)
+void Matrix::setElement(const int &row, const int &col, const int &value)
 {
     if((row <= rows)&&(row>=0)&&(col<=cols)&&(col>=0)){
         data[row][col] = value;
@@ -163,6 +187,16 @@ void Matrix::setData(const QVector<QVector<int> > &vec)
     } else {
         throw MatrixExeption("Ошибка : Размерность вектора не совпадает с размерностью матрицы");
     }
+}
+
+void Matrix::setCols(int newCols)
+{
+    cols = newCols;
+}
+
+void Matrix::setRows(int newRows)
+{
+    rows = newRows;
 }
 
 Matrix::MatrixExeption::MatrixExeption(const std::string& error)

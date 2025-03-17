@@ -9,10 +9,10 @@ public:
     UnorientedGraph(const int& vershini);
     virtual ~UnorientedGraph() override{}
 
-    void graphGenerate();
-    void acycleGraphGenerate();
+    virtual void graphGenerate() override;
+    virtual void acycleGraphGenerate() override;
 
-    void addEdge(const int &v, const int &u);
+    virtual void addEdge(const int &v, const int &u) override;
 };
 
 #endif // UNORIENTEDGRAPH_H

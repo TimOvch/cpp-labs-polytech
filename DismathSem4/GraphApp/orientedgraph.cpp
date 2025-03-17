@@ -1,41 +1,40 @@
 #include "orientedgraph.h"
+#include <QRandomGenerator>
+
 
 OrientedGraph::OrientedGraph(const int &vershini)
     : AbstractGraph(vershini)
-{}
+{
+    type = "oriented";
+}
 
 void OrientedGraph::graphGenerate()
 {
-    for (int i = 1; i < p; ++i) {
-        int u = QRandomGenerator::global()->bounded(i);
-        addEdge(u, i);
-    }
-
-    int additionalEdges = QRandomGenerator::global()->bounded((p*(p-1))/2 - p - 1);
-
-    for (int i = 0; i < additionalEdges; ++i) {
-        int u = QRandomGenerator::global()->bounded(p);
-        int v = QRandomGenerator::global()->bounded(p);
-
-        if (u != v && adjacency.getElem(u,v) == 0) {
-            addEdge(u, v);
-        } else{
-            additionalEdges++;
-        }
-    }
 
 }
 
 void OrientedGraph::acycleGraphGenerate()
 {
-    for (int i = 1; i < p; ++i) {
-        int u = QRandomGenerator::global()->bounded(i);
-        addEdge(i, u);
+    generatePowers();
+
+    Distribution dist(2, 0.9);
+
+    for (int i = 0; i < p ; i++) {
+        for (int k = 0; k < powers[p-i-1] ; k++) {
+            int j = QRandomGenerator::global()->bounded(p);
+            if ( i != j && i < j && adjacency.getElem(i,j) != 1) {
+                addEdge(i,j);
+                weights.setElement(i,j,std::abs(dist.getRandom()));
+            } else{
+                k--;
+            }
+        }
     }
 }
 
 void OrientedGraph::addEdge(const int &v, const int &u)
 {
     adjacency.setElement(v,u,1);
+    q++;
 }
 

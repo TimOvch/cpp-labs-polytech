@@ -2,55 +2,131 @@
 #include <QFile>
 #include <QTextStream>
 #include <random>
+#include <algorithm>
+#include <QDebug>
+#include <QQueue>
+
+
+int AbstractGraph::getP() const
+{
+    return p;
+}
+
+void AbstractGraph::setP(const int& newP)
+{
+    p = newP;
+}
+
+int AbstractGraph::getQ() const
+{
+    return q;
+}
+
+void AbstractGraph::setQ(const int& newQ)
+{
+    q = newQ;
+}
+
+Matrix AbstractGraph::getAdjacency() const
+{
+    return adjacency;
+}
+
+QString AbstractGraph::getName() const
+{
+    return name;
+}
+
+void AbstractGraph::setName(const QString &newName)
+{
+    name = newName;
+}
+
+QString AbstractGraph::getType() const
+{
+    return type;
+}
+
+void AbstractGraph::loadAdjacency(const Matrix &mat)
+{
+    adjacency = mat;
+    p = mat.getCols();
+}
+
+QPair<int, QVector<QVector<int>>> AbstractGraph::countPathsBFS(const int& startVertex, const int& targetVertex) {
+    if (startVertex == targetVertex) {
+        QVector<QVector<int>> paths;
+        paths.append({startVertex});
+        return qMakePair(1, paths);
+    }
+
+    QVector<int> pathCounts(p, 0);
+    QVector<QVector<QVector<int>>> allPaths(p);
+    QQueue<int> queue;
+
+    queue.enqueue(startVertex);
+    pathCounts[startVertex] = 1;
+    allPaths[startVertex].append({startVertex});
+
+    while (!queue.isEmpty()) {
+        int currentVertex = queue.dequeue();
+
+        for (int i = 0; i < p; ++i) {
+            if (adjacency.getElem(currentVertex, i) == 1) {
+                if (pathCounts[i] == 0) {
+                    queue.enqueue(i);
+                }
+
+                pathCounts[i] += pathCounts[currentVertex];
+                for (const QVector<int>& path : allPaths[currentVertex]) {
+                    QVector<int> newPath = path;
+                    newPath.append(i);
+                    allPaths[i].append(newPath);
+                }
+            }
+        }
+    }
+
+    return qMakePair(pathCounts[targetVertex], allPaths[targetVertex]);
+}
+
 
 AbstractGraph::AbstractGraph(const int &vershini)
-    : adjacency(p,p)
+    :p(vershini), adjacency(p,p), weights(p,p), powers(p,0), q(0)
 {
-    p = vershini;
 }
 
-void AbstractGraph::saveToFile(const QString &fileName) const
+Matrix AbstractGraph::shimbellMethod(const int &times, const bool &max)
 {
-    QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning("Не удалось открыть файл для записи");
-        return;
+    Matrix out(weights);
+    for(int i =0; i < times; i++){
+        out = out.shimbelMult(weights,max);
     }
 
-    QTextStream out(&file);
-    for (const QVector<int>& row : adjacency.getData()) {
-        for (int val : row) {
-            out << val << " ";
-        }
-        out << "\n";
-    }
-
-    file.close();
+    return out;
 }
 
-void AbstractGraph::loadFromFile(const QString &fileName)
+Matrix AbstractGraph::getWeights() const
 {
-    QVector<QVector<int>> matrix;
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning("Не удалось открыть файл для чтения");
-        return;
-    }
+    return weights;
+}
 
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList strings = line.split(" ", Qt::SkipEmptyParts);
-        QVector<int> row;
-        for (const QString& str : strings) {
-            row.append(str.toInt());
+void AbstractGraph::generatePowers()
+{
+    int bound = p;
+    Distribution dist(2, 0.9);
+    for(int i = 0; i < p-1; ++i){
+        int random = static_cast<int>(dist.getRandom());
+        if (random <= bound - 1 && random > 0) {
+            powers[i] = random;
+            bound--;
+        } else{
+            i--;
         }
-        matrix.append(row);
     }
 
-    adjacency.setData(matrix);
-
-    file.close();
+    std::sort(powers.begin(),powers.end());
+    qDebug() << powers;
 }
 
 AbstractGraph::AbstractGraphExeption::AbstractGraphExeption(const std::string &error)
