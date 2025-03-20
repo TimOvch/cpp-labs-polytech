@@ -13,7 +13,7 @@ void GraphView::setAdjacencyMatrix(const QVector<QVector<int> > &matrix, bool is
     int n = matrix.size();
     if (n == 0) return;
 
-    int radius = 150;
+    int radius = 250;
     QPointF center(width() / 2.0, height() / 2.0);
     double angleStep = 2 * M_PI / n;
 
@@ -26,13 +26,13 @@ void GraphView::setAdjacencyMatrix(const QVector<QVector<int> > &matrix, bool is
     update();
 }
 
+
 void GraphView::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-
     if (adjacencyMatrix.isEmpty()) {
-        painter.drawText(rect(), Qt::AlignCenter, "Визуализация отсутсвует: нет активного графа");
+        painter.drawText(rect(), Qt::AlignCenter, "Визуализация отсутствует: нет активного графа");
         return;
     }
 
@@ -40,7 +40,6 @@ void GraphView::paintEvent(QPaintEvent *event) {
     if (n == 0) return;
 
     QPen pen(Qt::black);
-    pen.setWidth(2);
     painter.setPen(pen);
 
     for (int i = 0; i < n; ++i) {
@@ -48,10 +47,12 @@ void GraphView::paintEvent(QPaintEvent *event) {
         painter.setBrush(Qt::lightGray);
         painter.drawEllipse(nodePos, 20, 20);
 
-        QString nodeLabel = QString::number(i+1);
+        QString nodeLabel = QString::number(i + 1);
         QRectF textRect(nodePos.x() - 15, nodePos.y() - 10, 30, 20);
         painter.drawText(textRect, Qt::AlignCenter, nodeLabel);
+
     }
+
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -73,10 +74,34 @@ void GraphView::paintEvent(QPaintEvent *event) {
                     painter.drawLine(adjustedTo, arrowP1);
                     painter.drawLine(adjustedTo, arrowP2);
                 }
+
+                QPointF midPoint = (adjustedFrom + adjustedTo) / 2;
+                QString weightLabel = QString::number(adjacencyMatrix[i][j]);
+
+                QRectF weightRect(midPoint.x() - 15, midPoint.y() - 10, 30, 20);
+                painter.setBrush(QColor(255, 255, 255, 150));
+                painter.setPen(Qt::NoPen);
+                painter.drawRoundedRect(weightRect, 5, 5);
+
+                if (adjacencyMatrix[i][j] < 0) {
+                    painter.setPen(Qt::red);
+                } else {
+                    painter.setPen(Qt::blue);
+                }
+
+                painter.drawText(weightRect, Qt::AlignCenter, weightLabel);
+                painter.setPen(Qt::black);
+
             }
+
         }
+
     }
+
 }
+
+
+
 
 void GraphView::mousePressEvent(QMouseEvent *event) {
     QPointF mousePos = event->pos();

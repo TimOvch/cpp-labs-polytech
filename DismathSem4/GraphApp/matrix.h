@@ -18,7 +18,7 @@ public:
 
     Matrix boolMult(const Matrix& other) const;
     Matrix ternMult(const Matrix& other) const;
-    Matrix shimbelMult(const Matrix& other, const bool& max) const;
+    Matrix shimbelMult(const Matrix& other, const bool& if_max) const;
 
     friend QDebug operator<<(QDebug dbg, const Matrix& m);
 

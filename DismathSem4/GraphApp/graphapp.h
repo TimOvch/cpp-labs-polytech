@@ -22,6 +22,11 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+#include <QToolButton>
+#include <QWidgetAction>
+#include <QToolBar>
+#include <QHeaderView>
+#include <QDockWidget>
 
 #include "abstractgraph.h"
 #include "orientedgraph.h"
@@ -41,6 +46,7 @@ private:
 
     QTableWidget *adjacencyTable;
     QTableWidget *shimbellTable;
+    QTableWidget *weightsTable;
     QTextEdit *graphInfoDisplay;
     GraphView* view;
 
@@ -51,13 +57,14 @@ private:
     QComboBox *graphTypeCombo;
     QComboBox *shimbellCombo;
 
+    void setupToolBar(QToolBar *toolBar, GraphApp *app);
+
 private slots:
 
     void generateGraph();
 
     void changeActiveGraph(const int& newActiveGraphIndex);
-    void changeAdjacencyTable(const QVector<QVector<int>>& matrix);
-    void changeWeightsTable(const QVector<QVector<int> > &matrix);
+    void changeTable(QTableWidget *table,const QVector<QVector<int> > &matrix);
 
     void saveGraphToFile();
     void loadGraphFromFile();

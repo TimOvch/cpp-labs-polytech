@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QPainterPath>
 #include <QVector>
 #include <QPointF>
 #include <QMouseEvent>

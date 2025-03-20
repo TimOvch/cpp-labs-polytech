@@ -110,7 +110,7 @@ Matrix Matrix::ternMult(const Matrix &other) const
     return result;
 }
 
-Matrix Matrix::shimbelMult(const Matrix &other, const bool& max) const
+Matrix Matrix::shimbelMult(const Matrix &other, const bool& if_max) const
 {
     if (cols != other.rows) {
         throw MatrixExeption("Ошибка : Матрицы данной размерности не могут быть умножены методом Шимбелла");
@@ -118,23 +118,26 @@ Matrix Matrix::shimbelMult(const Matrix &other, const bool& max) const
     Matrix result(rows, other.cols);
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < other.cols; ++j) {
+            QVector<int> temp;
             for (int k = 0; k < cols; ++k) {
                 int sum = data[i][k] + other.data[k][j];
                 if((data[i][k] == 0) || (other.data[k][j] == 0)){
                     sum = 0;
                 }
-                if(max){
-                    result.data[i][j] = std::max(result.data[i][j] ,sum);
-                } else {
-                    if (result.data[i][j] == 0){
-                        result.data[i][j] = sum;
-                    } else if(sum == 0){
-                        result.data[i][j] = result.data[i][j];
-                    }
-                    else{
-                        result.data[i][j] = std::min(result.data[i][j] ,sum);
+                temp.push_back(sum);
+            }
+            if(if_max){
+                result.data[i][j] = *std::max_element(temp.begin(),temp.end());
+            } else {
+                int min=temp[0];
+                for(auto& num : temp){
+                    if(num!=0){
+                        if((min == 0) || (num < min)){
+                            min = num;
+                        }
                     }
                 }
+                result.data[i][j] = min;
             }
         }
     }

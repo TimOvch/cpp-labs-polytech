@@ -17,14 +17,18 @@ void OrientedGraph::acycleGraphGenerate()
 {
     generatePowers();
 
-    Distribution dist(2, 0.9);
+    Distribution dist(5, 1.1);
 
     for (int i = 0; i < p ; i++) {
         for (int k = 0; k < powers[p-i-1] ; k++) {
             int j = QRandomGenerator::global()->bounded(p);
             if ( i != j && i < j && adjacency.getElem(i,j) != 1) {
                 addEdge(i,j);
-                weights.setElement(i,j,std::abs(dist.getRandom()));
+                int el = std::abs(dist.getRandom());
+                while(el == 0){
+                    el = std::abs(dist.getRandom());
+                }
+                weights.setElement(i,j,el);
             } else{
                 k--;
             }
