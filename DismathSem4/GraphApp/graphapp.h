@@ -27,6 +27,11 @@
 #include <QToolBar>
 #include <QHeaderView>
 #include <QDockWidget>
+#include <QStyledItemDelegate>
+#include <QDialog>
+#include <QListWidget>
+#include <sstream>
+#include <QCheckBox>
 
 #include "abstractgraph.h"
 #include "orientedgraph.h"
@@ -54,10 +59,14 @@ private:
     QSpinBox *shimbellSpin;
     QSpinBox *startVertexSpin;
     QSpinBox *endVertexSpin;
+    QSpinBox *startDfsSpin;
+    QSpinBox *endDfsSpin;
     QComboBox *graphTypeCombo;
     QComboBox *shimbellCombo;
+    QCheckBox *negativeWeightsCheckBox;
 
     void setupToolBar(QToolBar *toolBar, GraphApp *app);
+    void refactorSpinBoxes();
 
 private slots:
 
@@ -65,6 +74,7 @@ private slots:
 
     void changeActiveGraph(const int& newActiveGraphIndex);
     void changeTable(QTableWidget *table,const QVector<QVector<int> > &matrix);
+    void changeInfo();
 
     void saveGraphToFile();
     void loadGraphFromFile();
@@ -72,6 +82,47 @@ private slots:
     void shimbellMethod();
 
     void findPaths();
+    void handlePathSelected(const QVector<int>& path);
+
+    void edgesDFS();
+};
+
+
+
+
+class HighlightNonEmptyDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    HighlightNonEmptyDelegate(QObject *parent = nullptr);
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+};
+
+
+
+
+
+class PathsDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    PathsDialog(const QVector<QVector<int>>& paths, QWidget *parent = nullptr);
+
+signals:
+    void pathSelected(const QVector<int>& path);
+
+private:
+    QListWidget *listWidget;
+
+    std::string formatPath(const QVector<int>& path);
+
+private slots:
+    void emitPathSelected(QListWidgetItem *item);
+
+private:
+    QVector<QVector<int>> paths;
 };
 
 #endif // GRAPHAPP_H

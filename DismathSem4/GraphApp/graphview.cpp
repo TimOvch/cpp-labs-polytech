@@ -2,12 +2,13 @@
 
 
 
-GraphView::GraphView(QWidget *parent) : QWidget(parent), directed(false) {}
+GraphView::GraphView(QWidget *parent) : QWidget(parent), directed(false) {
+}
 
 void GraphView::setAdjacencyMatrix(const QVector<QVector<int> > &matrix, bool isDirected) {
     adjacencyMatrix = matrix;
     directed = isDirected;
-
+    highlightedPath.clear();
 
     nodes.clear();
     int n = matrix.size();
@@ -26,11 +27,22 @@ void GraphView::setAdjacencyMatrix(const QVector<QVector<int> > &matrix, bool is
     update();
 }
 
+void GraphView::highlightPath(const QVector<int> &path) {
+    highlightedPath = path;
+    update();
+}
+
+void GraphView::clearHighlightedPath() {
+    highlightedPath.clear();
+    update();
+}
+
 
 void GraphView::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
+
     if (adjacencyMatrix.isEmpty()) {
         painter.drawText(rect(), Qt::AlignCenter, "Визуализация отсутствует: нет активного графа");
         return;
@@ -46,25 +58,34 @@ void GraphView::paintEvent(QPaintEvent *event) {
         QPointF nodePos = nodes[i];
         painter.setBrush(Qt::lightGray);
         painter.drawEllipse(nodePos, 20, 20);
-
         QString nodeLabel = QString::number(i + 1);
         QRectF textRect(nodePos.x() - 15, nodePos.y() - 10, 30, 20);
         painter.drawText(textRect, Qt::AlignCenter, nodeLabel);
-
     }
-
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             if (adjacencyMatrix[i][j] != 0) {
                 QPointF from = nodes[i];
                 QPointF to = nodes[j];
-
                 double angle = atan2(to.y() - from.y(), to.x() - from.x());
-
                 QPointF adjustedFrom = from + QPointF(20 * cos(angle), 20 * sin(angle));
-
                 QPointF adjustedTo = to - QPointF(20 * cos(angle), 20 * sin(angle));
+
+                bool isHighlighted = false;
+                for (int k = 0; k < highlightedPath.size() - 1; ++k) {
+                    if ((highlightedPath[k] == i && highlightedPath[k + 1] == j) ||
+                        (!directed && highlightedPath[k] == j && highlightedPath[k + 1] == i)) {
+                        isHighlighted = true;
+                        break;
+                    }
+                }
+
+                if (isHighlighted) {
+                    painter.setPen(QPen(Qt::red, 3));
+                } else {
+                    painter.setPen(QPen(Qt::black, 1));
+                }
 
                 painter.drawLine(adjustedFrom, adjustedTo);
 
@@ -77,7 +98,6 @@ void GraphView::paintEvent(QPaintEvent *event) {
 
                 QPointF midPoint = (adjustedFrom + adjustedTo) / 2;
                 QString weightLabel = QString::number(adjacencyMatrix[i][j]);
-
                 QRectF weightRect(midPoint.x() - 15, midPoint.y() - 10, 30, 20);
                 painter.setBrush(QColor(255, 255, 255, 150));
                 painter.setPen(Qt::NoPen);
@@ -91,17 +111,10 @@ void GraphView::paintEvent(QPaintEvent *event) {
 
                 painter.drawText(weightRect, Qt::AlignCenter, weightLabel);
                 painter.setPen(Qt::black);
-
             }
-
         }
-
     }
-
 }
-
-
-
 
 void GraphView::mousePressEvent(QMouseEvent *event) {
     QPointF mousePos = event->pos();

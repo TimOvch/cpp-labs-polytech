@@ -2,10 +2,11 @@
 #include <QRandomGenerator>
 
 
-OrientedGraph::OrientedGraph(const int &vershini)
+OrientedGraph::OrientedGraph(const int &vershini, const bool& negative_weights)
     : AbstractGraph(vershini)
 {
     type = "oriented";
+    negativeWeights = negative_weights;
 }
 
 void OrientedGraph::graphGenerate()
@@ -17,6 +18,9 @@ void OrientedGraph::acycleGraphGenerate()
 {
     generatePowers();
 
+    acycle = 1;
+    connected = 1;
+
     Distribution dist(5, 1.1);
 
     for (int i = 0; i < p ; i++) {
@@ -24,7 +28,7 @@ void OrientedGraph::acycleGraphGenerate()
             int j = QRandomGenerator::global()->bounded(p);
             if ( i != j && i < j && adjacency.getElem(i,j) != 1) {
                 addEdge(i,j);
-                int el = std::abs(dist.getRandom());
+                int el = negativeWeights ? dist.getRandom() : std::abs(dist.getRandom());
                 while(el == 0){
                     el = std::abs(dist.getRandom());
                 }

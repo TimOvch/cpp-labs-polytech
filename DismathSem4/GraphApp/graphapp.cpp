@@ -35,9 +35,16 @@ GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1),
 
     QTabWidget *tabWidget = new QTabWidget;
     tabWidget->setMinimumSize(600, 500);
+    HighlightNonEmptyDelegate* delegate = new HighlightNonEmptyDelegate(this);
     adjacencyTable = new QTableWidget();
+    adjacencyTable->setItemDelegate(delegate);
+    adjacencyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     shimbellTable = new QTableWidget();
+    shimbellTable->setItemDelegate(delegate);
+    shimbellTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     weightsTable = new QTableWidget();
+    weightsTable->setItemDelegate(delegate);
+    weightsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tabWidget->addTab(adjacencyTable, "Матрица смежности");
     tabWidget->addTab(weightsTable, "Матрица весов");
     tabWidget->addTab(shimbellTable, "Метод Шимбелла");
@@ -78,9 +85,14 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
 
     QWidgetAction *verticesAction = new QWidgetAction(graphControlMenu);
     verticesSpin = new QSpinBox();
-    verticesSpin->setRange(2, 50);
+    verticesSpin->setRange(2, 100);
     verticesAction->setDefaultWidget(verticesSpin);
     graphControlMenu->addAction(verticesAction);
+
+    QWidgetAction *negativeWeightsAction = new QWidgetAction(graphControlMenu);
+    negativeWeightsCheckBox = new QCheckBox("Разрешить отрицательные веса", this);
+    negativeWeightsAction->setDefaultWidget(negativeWeightsCheckBox);
+    graphControlMenu->addAction(negativeWeightsAction);
 
     QAction *generateAction = new QAction("Генерировать", graphControlMenu);
     connect(generateAction, &QAction::triggered, app, &GraphApp::generateGraph);
@@ -89,6 +101,8 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     graphControlButton->setMenu(graphControlMenu);
     graphControlButton->setPopupMode(QToolButton::InstantPopup);
     toolBar->addWidget(graphControlButton);
+
+
 
     // МЕТОД ШИМБЕЛЛА
     QToolButton *shimbellButton = new QToolButton(toolBar);
@@ -119,30 +133,11 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     shimbellButton->setPopupMode(QToolButton::InstantPopup);
     toolBar->addWidget(shimbellButton);
 
-    // ФАЙЛЫ
-    QToolButton *fileControlButton = new QToolButton(toolBar);
-    fileControlButton->setText("Файл");
-    QMenu *fileControlMenu = new QMenu(fileControlButton);
-    fileControlMenu->setStyleSheet(
-        "QMenu { padding: 10px; }"
-        "QMenu::item { padding: 10px 10px; }"
-        );
 
-    QAction *openAction = new QAction("Открыть из файла", fileControlMenu);
-    connect(openAction, &QAction::triggered, app, &GraphApp::loadGraphFromFile);
-    fileControlMenu->addAction(openAction);
-
-    QAction *saveAction = new QAction("Сохранить в файл", fileControlMenu);
-    connect(saveAction, &QAction::triggered, app, &GraphApp::saveGraphToFile);
-    fileControlMenu->addAction(saveAction);
-
-    fileControlButton->setMenu(fileControlMenu);
-    fileControlButton->setPopupMode(QToolButton::InstantPopup);
-    toolBar->addWidget(fileControlButton);
 
     // ПОИСК ПУТЕЙ
     QToolButton *pathControlButton = new QToolButton(toolBar);
-    pathControlButton->setText("Поиск путей");
+    pathControlButton->setText("Поиск маршрутов");
     QMenu *pathControlMenu = new QMenu(pathControlButton);
     pathControlMenu->setStyleSheet(
         "QMenu { padding: 10px; }"
@@ -168,13 +163,75 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     pathControlButton->setMenu(pathControlMenu);
     pathControlButton->setPopupMode(QToolButton::InstantPopup);
     toolBar->addWidget(pathControlButton);
+
+    // DFS по ребрам
+    QToolButton *dfsButton = new QToolButton(toolBar);
+    dfsButton->setText("Обход ребер в глубину");
+    QMenu *dfsControlMenu = new QMenu(dfsButton);
+    dfsControlMenu->setStyleSheet(
+        "QMenu { padding: 10px; }"
+        "QMenu::item { padding: 10px 10px; }"
+        );
+
+    QWidgetAction *startDFSAction = new QWidgetAction(dfsControlMenu);
+    startDfsSpin = new QSpinBox();
+    startDfsSpin->setRange(1, 50);
+    startDFSAction->setDefaultWidget(startDfsSpin);
+    dfsControlMenu->addAction(startDFSAction);
+
+    QWidgetAction *endDFSAction = new QWidgetAction(dfsControlMenu);
+    endDfsSpin = new QSpinBox();
+    endDfsSpin->setRange(1, 50);
+    endDFSAction->setDefaultWidget(endDfsSpin);
+    dfsControlMenu->addAction(endDFSAction);
+
+    QAction *showDFSAction = new QAction("Запустить обход", dfsControlMenu);
+    connect(showDFSAction, &QAction::triggered, app, &GraphApp::edgesDFS);
+    dfsControlMenu->addAction(showDFSAction);
+
+    dfsButton->setMenu(dfsControlMenu);
+    dfsButton->setPopupMode(QToolButton::InstantPopup);
+    toolBar->addWidget(dfsButton);
+
+
+
+    // ФАЙЛЫ
+    QToolButton *fileControlButton = new QToolButton(toolBar);
+    fileControlButton->setText("Файл");
+    QMenu *fileControlMenu = new QMenu(fileControlButton);
+    fileControlMenu->setStyleSheet(
+        "QMenu { padding: 10px; }"
+        "QMenu::item { padding: 10px 10px; }"
+        );
+
+    QAction *openAction = new QAction("Открыть из файла", fileControlMenu);
+    connect(openAction, &QAction::triggered, app, &GraphApp::loadGraphFromFile);
+    fileControlMenu->addAction(openAction);
+
+    QAction *saveAction = new QAction("Сохранить в файл", fileControlMenu);
+    connect(saveAction, &QAction::triggered, app, &GraphApp::saveGraphToFile);
+    fileControlMenu->addAction(saveAction);
+
+    fileControlButton->setMenu(fileControlMenu);
+    fileControlButton->setPopupMode(QToolButton::InstantPopup);
+    toolBar->addWidget(fileControlButton);
+}
+
+void GraphApp::refactorSpinBoxes()
+{
+    verticesSpin->setRange(1,graphs[activeGraphIndex]->getP());
+    shimbellSpin->setRange(1,graphs[activeGraphIndex]->getP());
+    startVertexSpin->setRange(1,graphs[activeGraphIndex]->getP());
+    endVertexSpin->setRange(1,graphs[activeGraphIndex]->getP());
+    startDfsSpin->setRange(1,graphs[activeGraphIndex]->getP());
+    endDfsSpin->setRange(1,graphs[activeGraphIndex]->getP());
 }
 
 void GraphApp::generateGraph()
 {
     graphsCount++;
     if(graphTypeCombo->currentIndex() == 0){
-        AbstractGraph* newGraph = new OrientedGraph(verticesSpin->value());
+        AbstractGraph* newGraph = new OrientedGraph(verticesSpin->value(),negativeWeightsCheckBox->isChecked());
         newGraph->setName("Новый граф");
         newGraph->acycleGraphGenerate();
         graphs.push_back(newGraph);
@@ -191,7 +248,9 @@ void GraphApp::changeActiveGraph(const int &newActiveGraphIndex)
     changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
     changeTable(shimbellTable,(graphs[activeGraphIndex])->getWeights().getData());
     changeTable(weightsTable,(graphs[activeGraphIndex])->getWeights().getData());
+    changeInfo();
     view->setAdjacencyMatrix((graphs[activeGraphIndex])->getWeights().getData(),1);
+    refactorSpinBoxes();
 }
 
 void GraphApp::changeTable(QTableWidget *table, const QVector<QVector<int> > &matrix)
@@ -222,6 +281,32 @@ void GraphApp::changeTable(QTableWidget *table, const QVector<QVector<int> > &ma
     table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
+void GraphApp::changeInfo()
+{
+    AbstractGraph* activeGraph = graphs[activeGraphIndex];
+    QString info = QString(
+                       "<div style='padding: 10px;'>"
+                       "<h1 style='margin-bottom: 20px;'>Информация о графе</h1>"
+                       "<table style='width: 100%; border-collapse: collapse;'>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Количество вершин:</b></td><td style='padding: 5px;'>%1</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Количество ребер:</b></td><td style='padding: 5px;'>%2</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Тип графа:</b></td><td style='padding: 5px;'>%3</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Ациклический:</b></td><td style='padding: 5px;'>%4</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Связный:</b></td><td style='padding: 5px;'>%5</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Отрицательные веса:</b></td><td style='padding: 5px;'>%6</td></tr>"
+                       "</table>"
+                       "</div>"
+                       )
+                       .arg(activeGraph->getP())
+                       .arg(activeGraph->getQ())
+                       .arg(activeGraph->getType())
+                       .arg(activeGraph->getAcycle() ? "Да" : "Нет")
+                       .arg(activeGraph->getConnected() ? "Да" : "Нет")
+                       .arg(activeGraph->getNegativeWeights() ? "Да" : "Нет");
+
+    graphInfoDisplay->setText(info);
+}
+
 
 void GraphApp::saveGraphToFile() {
     if (graphsCount != 0) {
@@ -247,6 +332,7 @@ void GraphApp::saveGraphToFile() {
                 }
 
                 out << activeGraph->getP() << "\n";
+                out << activeGraph->getNegativeWeights() << "\n";
 
                 QVector<QVector<int>> matrix = activeGraph->getAdjacency().getData();
                 for (const auto& row : matrix) {
@@ -300,6 +386,7 @@ void GraphApp::loadGraphFromFile() {
             QString graphName = in.readLine();
             QString graphType = in.readLine();
             int verticesCount = in.readLine().toInt();
+            bool neg = in.readLine().toInt();
 
 
             QVector<QVector<int>> matrix;
@@ -317,7 +404,7 @@ void GraphApp::loadGraphFromFile() {
 
             AbstractGraph* newGraph = nullptr;
             if (graphType == "Oriented") {
-                newGraph = new OrientedGraph(verticesCount);
+                newGraph = new OrientedGraph(verticesCount,neg);
             } else if (graphType == "Unoriented") {
                 newGraph = new UnorientedGraph(verticesCount);
             }
@@ -372,8 +459,113 @@ void GraphApp::findPaths() {
     }
 
     QPair<int, QVector<QVector<int>>> result = graphs[activeGraphIndex]->countPathsBFS(start-1,end-1);
-    graphInfoDisplay->setText(QString("Количество путей из %1 в %2: %3").arg(start).arg(end).arg(result.first));
+
+    if (result.first > 0) {
+        PathsDialog *dialog = new PathsDialog(result.second, this);
+        connect(dialog, &PathsDialog::pathSelected, this, &GraphApp::handlePathSelected);
+        dialog->exec();
+        view->clearHighlightedPath();
+    } else {
+        QMessageBox::information(this, "Информация", "Пути не найдены.");
+    }
+
+}
+
+void GraphApp::handlePathSelected(const QVector<int> &path)
+{
+    view->highlightPath(path);
+}
+
+void GraphApp::edgesDFS()
+{
+    if (activeGraphIndex == -1) {
+        QMessageBox::warning(this, "Ошибка", "Граф не сгенерирован.");
+        return;
+    }
+
+    int start = startDfsSpin->value();
+    int end = endDfsSpin->value();
+
+    if (start > graphs[activeGraphIndex]->getAdjacency().getRows() || end > graphs[activeGraphIndex]->getAdjacency().getRows()) {
+        QMessageBox::warning(this, "Ошибка", "Номера вершин больше количества вершин графа.");
+        return;
+    }
+
+    if(!(graphs[activeGraphIndex]->checkEdge(start-1,end-1))){
+        QMessageBox::warning(this, "Ошибка", "Заданного ребра не существует.");
+        return;
+    }
+
+    QString result = graphs[activeGraphIndex]->edgesDFS(start-1,end-1);
+
+    QMessageBox::information(this, "Результат обхода графа", result);
 }
 
 
+// ДЕЛЕГАТ ДЛЯ ТАБЛИЦ -------------------------------------------------------------------------------
 
+HighlightNonEmptyDelegate::HighlightNonEmptyDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
+
+void HighlightNonEmptyDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QVariant data = index.data(Qt::DisplayRole);
+
+    if (data.toInt()!=0)
+    {
+        QStyleOptionViewItem opt = option;
+        initStyleOption(&opt, index);
+
+        painter->fillRect(opt.rect, QColor(8, 14, 82));
+
+        painter->setPen(opt.palette.color(QPalette::Text));
+        painter->drawText(opt.rect, opt.displayAlignment, data.toString());
+    }
+    else
+    {
+        QStyledItemDelegate::paint(painter, option, index);
+    }
+}
+
+// ДЕЛЕГАТ ДЛЯ ТАБЛИЦ -------------------------------------------------------------------------------
+
+
+
+// ДИАЛОГ ДЛЯ ПУТЕЙ ---------------------------------------------------------------------------------
+
+PathsDialog::PathsDialog(const QVector<QVector<int> > &paths, QWidget *parent)
+    : paths(paths) ,QDialog(parent) {
+    setWindowTitle("Маршруты между вершинами");
+    setMinimumSize(300, 200);
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+
+    QLabel *label = new QLabel("Возможные маршруты:", this);
+    layout->addWidget(label);
+
+    listWidget = new QListWidget(this);
+    for (const QVector<int>& path : paths) {
+        QString pathString = "Маршрут: " + QString::fromStdString(formatPath(path));
+        listWidget->addItem(pathString);
+    }
+    layout->addWidget(listWidget);
+
+    connect(listWidget, &QListWidget::itemClicked, this, &PathsDialog::emitPathSelected);
+}
+
+std::string PathsDialog::formatPath(const QVector<int> &path) {
+    std::stringstream ss;
+    for (int i = 0; i < path.size(); ++i) {
+        ss << (path[i] + 1);
+        if (i < path.size() - 1) {
+            ss << " -> ";
+        }
+    }
+    return ss.str();
+}
+
+void PathsDialog::emitPathSelected(QListWidgetItem *item) {
+    int index = listWidget->row(item);
+    emit pathSelected(paths[index]);
+}
+
+// ДИАЛОГ ДЛЯ ПУТЕЙ ---------------------------------------------------------------------------------

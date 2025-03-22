@@ -5,7 +5,9 @@
 #include <algorithm>
 #include <QDebug>
 #include <QQueue>
-
+#include <QPair>
+#include <QStack>
+#include <limits.h>
 
 int AbstractGraph::getP() const
 {
@@ -106,9 +108,97 @@ Matrix AbstractGraph::shimbellMethod(const int &times, const bool &max)
     return out;
 }
 
+QString AbstractGraph::edgesDFS(const int &startVertex, const int &endVertex) {
+    QString result;
+    QVector<QPair<int, int>> visitedEdges;
+    QStack<QPair<int, int>> stack;
+
+    stack.push(qMakePair(startVertex, endVertex));
+
+    while (!stack.isEmpty()) {
+        QPair<int, int> currentEdge = stack.pop();
+        int u = currentEdge.first;
+        int v = currentEdge.second;
+
+        bool isVisited = false;
+        for (const auto& edge : visitedEdges) {
+            if ((edge.first == u && edge.second == v) ||
+                (edge.first == v && edge.second == u)) {
+                isVisited = true;
+                break;
+            }
+        }
+
+        if (!isVisited) {
+            visitedEdges.append(qMakePair(u, v));
+            result += QString("(%1, %2) ").arg(u+1).arg(v+1);
+
+            for (int i = 0; i < p; ++i) {
+                if (adjacency.getElem(v, i) == 1) {
+                    stack.push(qMakePair(v, i));
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+QVector<int> AbstractGraph::dijkstra(const int& startVertex) {
+    int numVertices = p;
+    QVector<int> distances(numVertices, INT_MAX);
+    QVector<bool> visited(numVertices, false);
+
+    distances[startVertex] = 0;
+
+    for (int i = 0; i < numVertices - 1; ++i) {
+        int minDistance = INT_MAX;
+        int minIndex = -1;
+        for (int j = 0; j < numVertices; ++j) {
+            if (!visited[j] && distances[j] <= minDistance) {
+                minDistance = distances[j];
+                minIndex = j;
+            }
+        }
+
+        if (minIndex == -1) break;
+
+        visited[minIndex] = true;
+
+        for (int k = 0; k < numVertices; ++k) {
+            if (!visited[k] && adjacency.getElem(minIndex, k) == 1 &&
+                distances[minIndex] != INT_MAX &&
+                distances[minIndex] + weights.getElem(minIndex, k) < distances[k]) {
+                distances[k] = distances[minIndex] + weights.getElem(minIndex, k);
+            }
+        }
+    }
+
+    return distances;
+}
+
+bool AbstractGraph::checkEdge(const int &startVertex, const int &endVertex){
+    return adjacency.getElem(startVertex,endVertex)!=0;
+}
+
 Matrix AbstractGraph::getWeights() const
 {
     return weights;
+}
+
+bool AbstractGraph::getConnected() const
+{
+    return connected;
+}
+
+bool AbstractGraph::getAcycle() const
+{
+    return acycle;
+}
+
+bool AbstractGraph::getNegativeWeights() const
+{
+    return negativeWeights;
 }
 
 void AbstractGraph::generatePowers()

@@ -6,7 +6,7 @@
 class OrientedGraph : public AbstractGraph
 {
 public:
-    OrientedGraph(const int& vershini);
+    OrientedGraph(const int& vershini, const bool& negative_weights);
     virtual ~OrientedGraph(){}
 
     virtual void graphGenerate() override;
