@@ -32,6 +32,7 @@
 #include <QListWidget>
 #include <sstream>
 #include <QCheckBox>
+#include <QHeaderView>
 
 #include "abstractgraph.h"
 #include "orientedgraph.h"
@@ -46,12 +47,16 @@ public:
 
 private:
     QVector<AbstractGraph*> graphs;
+    QVector<QVector<int>> dijkstraPaths;
     int graphsCount;
     int activeGraphIndex;
+    int dijkstraIterations;
+    int dijkstraWithNegIterations;
 
     QTableWidget *adjacencyTable;
     QTableWidget *shimbellTable;
     QTableWidget *weightsTable;
+    QTableWidget *dijkstraTable;
     QTextEdit *graphInfoDisplay;
     GraphView* view;
 
@@ -61,9 +66,11 @@ private:
     QSpinBox *endVertexSpin;
     QSpinBox *startDfsSpin;
     QSpinBox *endDfsSpin;
+    QSpinBox *dijkstraSpin;
     QComboBox *graphTypeCombo;
     QComboBox *shimbellCombo;
     QCheckBox *negativeWeightsCheckBox;
+    QCheckBox *negativedijkstraCheckBox;
 
     void setupToolBar(QToolBar *toolBar, GraphApp *app);
     void refactorSpinBoxes();
@@ -76,6 +83,8 @@ private slots:
     void changeTable(QTableWidget *table,const QVector<QVector<int> > &matrix);
     void changeInfo();
 
+    void tabChanged(int index);
+
     void saveGraphToFile();
     void loadGraphFromFile();
 
@@ -85,6 +94,9 @@ private slots:
     void handlePathSelected(const QVector<int>& path);
 
     void edgesDFS();
+
+    void dijkstraAlgorithm();
+    void onDijkstraTableClicked(QTableWidgetItem* item);
 };
 
 

@@ -30,7 +30,8 @@ public:
     virtual void addEdge(const int& v, const int& u) = 0;
     Matrix shimbellMethod(const int& times, const bool& max);
     QString edgesDFS(const int& startVertex, const int& endVertex);
-    QVector<int> dijkstra(const int& startVertex);
+    QPair<QVector<int>, QVector<QVector<int>>> dijkstra(const int& startVertex, int& iterations);
+    QPair<QVector<int>, QVector<QVector<int>>> dijkstraWithNeg(const int& startVertex, int& iterations);
 
     bool checkEdge(const int& startVertex, const int& endVertex);
 

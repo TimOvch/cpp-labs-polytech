@@ -34,6 +34,7 @@ GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1),
     upperLayout->addWidget(view);
 
     QTabWidget *tabWidget = new QTabWidget;
+    connect(tabWidget,&QTabWidget::currentChanged, this,&GraphApp::tabChanged);
     tabWidget->setMinimumSize(600, 500);
     HighlightNonEmptyDelegate* delegate = new HighlightNonEmptyDelegate(this);
     adjacencyTable = new QTableWidget();
@@ -45,9 +46,13 @@ GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1),
     weightsTable = new QTableWidget();
     weightsTable->setItemDelegate(delegate);
     weightsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    dijkstraTable = new QTableWidget();
+    dijkstraTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    connect(dijkstraTable, &QTableWidget::itemClicked, this, &GraphApp::onDijkstraTableClicked);
     tabWidget->addTab(adjacencyTable, "Матрица смежности");
     tabWidget->addTab(weightsTable, "Матрица весов");
     tabWidget->addTab(shimbellTable, "Метод Шимбелла");
+    tabWidget->addTab(dijkstraTable, "Алгоритм Дейкстры");
     tabWidget->addTab(graphInfoDisplay, "Информация");
 
     upperLayout->addWidget(tabWidget);
@@ -194,6 +199,35 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     toolBar->addWidget(dfsButton);
 
 
+    //АЛГОРИТМ ДЕЙКСТРЫ
+    QToolButton *dijkstraButton = new QToolButton(toolBar);
+    dijkstraButton->setText("Алгоритм Дейкстры");
+    QMenu *dijkstraMenu = new QMenu(dijkstraButton);
+    dijkstraMenu->setStyleSheet(
+        "QMenu { padding: 10px; }"
+        "QMenu::item { padding: 10px 10px; }"
+        );
+
+    QWidgetAction *dijkstraAction = new QWidgetAction(dijkstraMenu);
+    dijkstraSpin = new QSpinBox();
+    dijkstraSpin->setRange(1, 50);
+    dijkstraAction->setDefaultWidget(dijkstraSpin);
+    dijkstraMenu->addAction(dijkstraAction);
+
+    QWidgetAction *negativeDijkstraAction = new QWidgetAction(dijkstraMenu);
+    negativedijkstraCheckBox = new QCheckBox("С отрицательными весами", this);
+    negativeDijkstraAction->setDefaultWidget(negativedijkstraCheckBox);
+    dijkstraMenu->addAction(negativeDijkstraAction);
+
+    QAction *dijkstraStartAction = new QAction("Запустить", dijkstraMenu);
+    connect(dijkstraStartAction, &QAction::triggered, app, &GraphApp::dijkstraAlgorithm);
+    dijkstraMenu->addAction(dijkstraStartAction);
+
+    dijkstraButton->setMenu(dijkstraMenu);
+    dijkstraButton->setPopupMode(QToolButton::InstantPopup);
+    toolBar->addWidget(dijkstraButton);
+
+
 
     // ФАЙЛЫ
     QToolButton *fileControlButton = new QToolButton(toolBar);
@@ -219,12 +253,12 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
 
 void GraphApp::refactorSpinBoxes()
 {
-    verticesSpin->setRange(1,graphs[activeGraphIndex]->getP());
     shimbellSpin->setRange(1,graphs[activeGraphIndex]->getP());
     startVertexSpin->setRange(1,graphs[activeGraphIndex]->getP());
     endVertexSpin->setRange(1,graphs[activeGraphIndex]->getP());
     startDfsSpin->setRange(1,graphs[activeGraphIndex]->getP());
     endDfsSpin->setRange(1,graphs[activeGraphIndex]->getP());
+    dijkstraSpin->setRange(1,graphs[activeGraphIndex]->getP());
 }
 
 void GraphApp::generateGraph()
@@ -248,6 +282,8 @@ void GraphApp::changeActiveGraph(const int &newActiveGraphIndex)
     changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
     changeTable(shimbellTable,(graphs[activeGraphIndex])->getWeights().getData());
     changeTable(weightsTable,(graphs[activeGraphIndex])->getWeights().getData());
+    dijkstraIterations = 0;
+    dijkstraWithNegIterations = 0;
     changeInfo();
     view->setAdjacencyMatrix((graphs[activeGraphIndex])->getWeights().getData(),1);
     refactorSpinBoxes();
@@ -294,6 +330,8 @@ void GraphApp::changeInfo()
                        "<tr><td style='padding: 5px; width: 40%;'><b>Ациклический:</b></td><td style='padding: 5px;'>%4</td></tr>"
                        "<tr><td style='padding: 5px; width: 40%;'><b>Связный:</b></td><td style='padding: 5px;'>%5</td></tr>"
                        "<tr><td style='padding: 5px; width: 40%;'><b>Отрицательные веса:</b></td><td style='padding: 5px;'>%6</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры:</b></td><td style='padding: 5px;'>%7</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры с отр. весами:</b></td><td style='padding: 5px;'>%8</td></tr>"
                        "</table>"
                        "</div>"
                        )
@@ -302,9 +340,16 @@ void GraphApp::changeInfo()
                        .arg(activeGraph->getType())
                        .arg(activeGraph->getAcycle() ? "Да" : "Нет")
                        .arg(activeGraph->getConnected() ? "Да" : "Нет")
-                       .arg(activeGraph->getNegativeWeights() ? "Да" : "Нет");
+                       .arg(activeGraph->getNegativeWeights() ? "Да" : "Нет")
+                       .arg(dijkstraIterations)
+                       .arg(dijkstraWithNegIterations);
 
     graphInfoDisplay->setText(info);
+}
+
+void GraphApp::tabChanged(int index)
+{
+    view->clearHighlightedPath();
 }
 
 
@@ -499,6 +544,74 @@ void GraphApp::edgesDFS()
     QString result = graphs[activeGraphIndex]->edgesDFS(start-1,end-1);
 
     QMessageBox::information(this, "Результат обхода графа", result);
+}
+
+void GraphApp::dijkstraAlgorithm()
+{
+    if(activeGraphIndex==-1){
+        QMessageBox::warning(this, "Ошибка", "Граф не сгенерирован.");
+        return;
+    }
+
+    if((graphs[activeGraphIndex]->getNegativeWeights()) && (!negativedijkstraCheckBox->isChecked())){
+        QMessageBox::warning(this, "Ошибка", "В графе могут присутствовать отрицательные веса!\n"
+                                             "Используйте алгоритм Дейкстры для отрицательных весов "
+                                             "или сгенерируйте новый граф.");
+        return;
+    }
+
+    QVector<int> distances;
+
+    if(negativedijkstraCheckBox->isChecked()){
+        auto result =  graphs[activeGraphIndex]->dijkstraWithNeg(dijkstraSpin->value()-1,dijkstraWithNegIterations);
+        distances = result.first;
+        dijkstraPaths = result.second;
+    } else {
+        auto result =  graphs[activeGraphIndex]->dijkstra(dijkstraSpin->value()-1,dijkstraIterations);
+        distances = result.first;
+        dijkstraPaths = result.second;
+    }
+
+    changeInfo();
+
+    dijkstraTable->setRowCount(distances.size());
+    dijkstraTable->setColumnCount(2);
+
+    dijkstraTable->setHorizontalHeaderLabels({"Вершина", "Расстояние"});
+
+    for (int i = 0; i < distances.size(); ++i) {
+        QTableWidgetItem* vertexItem = new QTableWidgetItem(QString::number(i+1));
+        dijkstraTable->setItem(i, 0, vertexItem);
+
+
+        int dist = distances[i];
+        QString distStr;
+
+        if(dist == INT_MAX){
+            distStr = "\u221E";
+        } else{
+            distStr = QString::number(dist);
+        }
+
+        QTableWidgetItem* distanceItem = new QTableWidgetItem(distStr);
+        dijkstraTable->setItem(i, 1, distanceItem);
+    }
+
+    dijkstraTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    dijkstraTable->setSelectionMode(QAbstractItemView::NoSelection);
+}
+
+void GraphApp::onDijkstraTableClicked(QTableWidgetItem *item) {
+    int row = item->row();
+    int vertex = dijkstraTable->item(row, 0)->text().toInt()-1;
+
+    if(dijkstraPaths.empty()) return;
+
+    QVector<int> path = dijkstraPaths[vertex];
+
+    if(path.empty()) return;
+
+    view->highlightPath(path);
 }
 
 

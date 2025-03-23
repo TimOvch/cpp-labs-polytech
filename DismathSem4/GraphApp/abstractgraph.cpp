@@ -8,6 +8,8 @@
 #include <QPair>
 #include <QStack>
 #include <limits.h>
+#include <queue>
+#include <vector>
 
 int AbstractGraph::getP() const
 {
@@ -144,37 +146,95 @@ QString AbstractGraph::edgesDFS(const int &startVertex, const int &endVertex) {
     return result;
 }
 
-QVector<int> AbstractGraph::dijkstra(const int& startVertex) {
+QPair<QVector<int>, QVector<QVector<int>>> AbstractGraph::dijkstra(const int& startVertex, int& iterations) {
     int numVertices = p;
     QVector<int> distances(numVertices, INT_MAX);
-    QVector<bool> visited(numVertices, false);
-
+    QVector<int> parents(numVertices, -1);
     distances[startVertex] = 0;
+    iterations = 0;
 
-    for (int i = 0; i < numVertices - 1; ++i) {
-        int minDistance = INT_MAX;
-        int minIndex = -1;
-        for (int j = 0; j < numVertices; ++j) {
-            if (!visited[j] && distances[j] <= minDistance) {
-                minDistance = distances[j];
-                minIndex = j;
-            }
-        }
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pq;
+    pq.push(std::make_pair(0, startVertex));
 
-        if (minIndex == -1) break;
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        int currentDist = pq.top().first;
+        pq.pop();
 
-        visited[minIndex] = true;
+        if (currentDist > distances[u]) continue;
 
-        for (int k = 0; k < numVertices; ++k) {
-            if (!visited[k] && adjacency.getElem(minIndex, k) == 1 &&
-                distances[minIndex] != INT_MAX &&
-                distances[minIndex] + weights.getElem(minIndex, k) < distances[k]) {
-                distances[k] = distances[minIndex] + weights.getElem(minIndex, k);
+        for (int v = 0; v < numVertices; ++v) {
+            iterations++;
+            if (adjacency.getElem(u, v) == 1) {
+                int newDistance = distances[u] + weights.getElem(u, v);
+
+                if (newDistance < distances[v]) {
+                    distances[v] = newDistance;
+                    parents[v] = u;
+                    pq.push(std::make_pair(newDistance, v));
+                }
             }
         }
     }
 
-    return distances;
+    QVector<QVector<int>> paths(numVertices);
+    for (int i = 0; i < numVertices; ++i) {
+        if (distances[i] != INT_MAX) {
+            int current = i;
+            while (current != -1) {
+                paths[i].push_front(current);
+                current = parents[current];
+            }
+        }
+    }
+
+    return qMakePair(distances, paths);
+}
+
+QPair<QVector<int>, QVector<QVector<int>>> AbstractGraph::dijkstraWithNeg(const int &startVertex, int& iterations)
+{
+    int numVertices = p;
+    QVector<int> distances(numVertices, INT_MAX);
+    QVector<int> parents(numVertices, -1);
+    distances[startVertex] = 0;
+
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pq;
+    pq.push(std::make_pair(0, startVertex));
+    iterations = 0;
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        int currentDist = pq.top().first;
+        pq.pop();
+
+        if (currentDist > distances[u]) continue;
+
+        for (int v = 0; v < numVertices; ++v) {
+            iterations++;
+            if (adjacency.getElem(u, v) == 1) {
+                int newDistance = distances[u] + weights.getElem(u, v);
+
+                if (newDistance < distances[v]) {
+                    distances[v] = newDistance;
+                    parents[v] = u;
+                    pq.push(std::make_pair(newDistance, v));
+                }
+            }
+        }
+    }
+
+    QVector<QVector<int>> paths(numVertices);
+    for (int i = 0; i < numVertices; ++i) {
+        if (distances[i] != INT_MAX) {
+            int current = i;
+            while (current != -1) {
+                paths[i].push_front(current);
+                current = parents[current];
+            }
+        }
+    }
+
+    return qMakePair(distances, paths);
 }
 
 bool AbstractGraph::checkEdge(const int &startVertex, const int &endVertex){
