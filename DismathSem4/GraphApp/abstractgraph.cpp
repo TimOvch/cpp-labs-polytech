@@ -191,33 +191,40 @@ QPair<QVector<int>, QVector<QVector<int>>> AbstractGraph::dijkstra(const int& st
     return qMakePair(distances, paths);
 }
 
-QPair<QVector<int>, QVector<QVector<int>>> AbstractGraph::dijkstraWithNeg(const int &startVertex, int& iterations)
-{
+QPair<QVector<int>, QVector<QVector<int>>> AbstractGraph::dijkstraWithNeg(const int &startVertex, int& iterations) {
     int numVertices = p;
+
     QVector<int> distances(numVertices, INT_MAX);
     QVector<int> parents(numVertices, -1);
     distances[startVertex] = 0;
 
-    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pq;
-    pq.push(std::make_pair(0, startVertex));
+    IndexedHeap<int> pq(numVertices);
+    pq.push(startVertex, 0);
+    for (int v = 0; v < numVertices; ++v) {
+        iterations++;
+
+        if (adjacency.getElem(startVertex, v) == 1) {
+            pq.push(startVertex, weights.getElem(startVertex, v));
+        }
+    }
+
     iterations = 0;
 
     while (!pq.empty()) {
-        int u = pq.top().second;
-        int currentDist = pq.top().first;
-        pq.pop();
-
-        if (currentDist > distances[u]) continue;
+        auto [currentDist, u] = pq.pop();
 
         for (int v = 0; v < numVertices; ++v) {
             iterations++;
+
             if (adjacency.getElem(u, v) == 1) {
                 int newDistance = distances[u] + weights.getElem(u, v);
 
                 if (newDistance < distances[v]) {
                     distances[v] = newDistance;
                     parents[v] = u;
-                    pq.push(std::make_pair(newDistance, v));
+
+                    pq.push(v, newDistance);
+                    pq.decreaseKey(v, newDistance);
                 }
             }
         }
@@ -285,4 +292,73 @@ AbstractGraph::AbstractGraphExeption::AbstractGraphExeption(const std::string &e
 
 const char *AbstractGraph::AbstractGraphExeption::what() const noexcept{
     return text.c_str();
+}
+
+template<typename T>
+IndexedHeap<T>::IndexedHeap(int capacity) : indices(capacity, -1), data(capacity) {}
+
+template<typename T>
+void IndexedHeap<T>::push(int key, const T &value) {
+    if (indices[key] != -1) return;
+    data.push_back({value, key});
+    indices[key] = data.size() - 1;
+    heapifyUp(data.size() - 1);
+}
+
+template<typename T>
+std::pair<T, int> IndexedHeap<T>::pop() {
+    std::pair<T, int> root = data.front();
+    std::swap(data[0], data.back());
+    indices[data[0].second] = 0;
+    data.pop_back();
+    indices[root.second] = -1;
+    heapifyDown(0);
+    return root;
+}
+
+template<typename T>
+void IndexedHeap<T>::decreaseKey(int key, const T &newValue) {
+    int index = indices[key];
+    if (index == -1 || data[index].first <= newValue) return;
+    data[index].first = newValue;
+    heapifyUp(index);
+}
+
+template<typename T>
+bool IndexedHeap<T>::empty() const {
+    return data.empty();
+}
+
+template<typename T>
+void IndexedHeap<T>::heapifyUp(int index) {
+    while (index > 0) {
+        int parent = (index - 1) / 2;
+        if (data[parent].first <= data[index].first) break;
+        swapNodes(parent, index);
+        index = parent;
+    }
+}
+
+template<typename T>
+void IndexedHeap<T>::heapifyDown(int index) {
+    int size = data.size();
+    while (true) {
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int smallest = index;
+
+        if (left < size && data[left].first < data[smallest].first) smallest = left;
+        if (right < size && data[right].first < data[smallest].first) smallest = right;
+
+        if (smallest == index) break;
+        swapNodes(index, smallest);
+        index = smallest;
+    }
+}
+
+template<typename T>
+void IndexedHeap<T>::swapNodes(int i, int j) {
+    std::swap(data[i], data[j]);
+    indices[data[i].second] = i;
+    indices[data[j].second] = j;
 }

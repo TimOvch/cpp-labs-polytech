@@ -284,6 +284,7 @@ void GraphApp::changeActiveGraph(const int &newActiveGraphIndex)
     changeTable(weightsTable,(graphs[activeGraphIndex])->getWeights().getData());
     dijkstraIterations = 0;
     dijkstraWithNegIterations = 0;
+    dijkstraTable->clear();
     changeInfo();
     view->setAdjacencyMatrix((graphs[activeGraphIndex])->getWeights().getData(),1);
     refactorSpinBoxes();

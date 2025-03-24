@@ -66,4 +66,29 @@ public:
     bool getNegativeWeights() const;
 };
 
+template <typename T>
+class IndexedHeap {
+public:
+    IndexedHeap(int capacity);
+
+    void push(int key, const T& value);
+
+    std::pair<T, int> pop();
+
+    void decreaseKey(int key, const T& newValue);
+
+    bool empty() const;
+
+private:
+    QVector<std::pair<T, int>> data;
+    QVector<int> indices;
+
+    void heapifyUp(int index);
+
+    void heapifyDown(int index);
+
+    void swapNodes(int i, int j);
+};
+
+
 #endif // ABSTRACTGRAPH_H
