@@ -5,6 +5,8 @@
 #include "distribution.h"
 #include "QString"
 #include "QPair"
+#include "QQueue"
+#include "QStack"
 
 class AbstractGraph
 {
@@ -12,12 +14,18 @@ protected:
     int p,q;
     Matrix adjacency;
     Matrix weights;
+    Matrix capacities;
     QVector<int> powers;
+    QVector<int> level;
+    QVector<QVector<int>> degrees;
     QString type;
     QString name;
     bool connected;
     bool acycle;
     bool negativeWeights;
+    bool flow;
+
+    bool bfs(const Matrix& residualGraph, int source, int sink, QVector<int>& parent);
 
     void generatePowers();
 
@@ -28,10 +36,15 @@ public:
     virtual void acycleGraphGenerate() = 0;
 
     virtual void addEdge(const int& v, const int& u) = 0;
+    void makeFlow();
     Matrix shimbellMethod(const int& times, const bool& max);
     QString edgesDFS(const int& startVertex, const int& endVertex);
     QPair<QVector<int>, QVector<QVector<int>>> dijkstra(const int& startVertex, int& iterations);
     QPair<QVector<int>, QVector<QVector<int>>> dijkstraWithNeg(const int& startVertex, int& iterations);
+    int fordFulkerson(int source, int sink);
+    QPair<int, int> minCostFlow(int source, int sink);
+
+
 
     bool checkEdge(const int& startVertex, const int& endVertex);
 
@@ -64,6 +77,8 @@ public:
     bool getAcycle() const;
     bool getWeighted() const;
     bool getNegativeWeights() const;
+    bool getFlow() const;
+    Matrix getCapacities() const;
 };
 
 template <typename T>

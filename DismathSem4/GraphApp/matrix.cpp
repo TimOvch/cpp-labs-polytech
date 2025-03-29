@@ -202,6 +202,32 @@ void Matrix::setRows(int newRows)
     rows = newRows;
 }
 
+void Matrix::insertRow(int index, const QVector<int> &row) {
+    if (row.size() != cols) {
+        throw MatrixExeption("Ошибка : Длина вектора не совпадает с количеством столбцов матрицы insertRow");
+    }
+    if (index < 0 || index > rows) {
+        throw MatrixExeption("Ошибка : Индекс строки выходит за пределы матрицы");
+    }
+
+    data.insert(index, row);
+    rows++;
+}
+
+void Matrix::insertColumn(int index, const QVector<int> &column) {
+    if (column.size() != rows) {
+        throw MatrixExeption("Ошибка : Длина вектора не совпадает с количеством строк матрицы insertColumn");
+    }
+    if (index < 0 || index > cols) {
+        throw MatrixExeption("Ошибка : Индекс столбца выходит за пределы матрицы");
+    }
+
+    for (int i = 0; i < rows; ++i) {
+        data[i].insert(index, column[i]);
+    }
+    cols++;
+}
+
 Matrix::MatrixExeption::MatrixExeption(const std::string& error)
     : text(error)
 {}

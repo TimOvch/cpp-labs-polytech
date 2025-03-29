@@ -33,6 +33,14 @@ void OrientedGraph::acycleGraphGenerate()
                     el = std::abs(dist.getRandom());
                 }
                 weights.setElement(i,j,el);
+
+                int cap = negativeWeights ? dist.getRandom() : std::abs(dist.getRandom());
+                while(cap == 0){
+                    cap = std::abs(dist.getRandom());
+                }
+                capacities.setElement(i,j,cap);
+                degrees[i][0]++;
+                degrees[j][1]++;
             } else{
                 k--;
             }

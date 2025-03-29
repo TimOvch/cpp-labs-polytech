@@ -19,6 +19,8 @@ public:
     explicit GraphView(QWidget *parent = nullptr);
 
     void setAdjacencyMatrix(const QVector<QVector<int>> &matrix, bool isDirected);
+    void setWeightsMatrix(const QVector<QVector<int>> &matrix);
+    void setCapacitiesMatrix(const QVector<QVector<int>> &matrix);
     void highlightPath(const QVector<int>& path);
     void clearHighlightedPath();
 
@@ -30,9 +32,12 @@ protected:
 
 private:
     QVector<QVector<int>> adjacencyMatrix;
+    QVector<QVector<int>> weightsMatrix;
+    QVector<QVector<int>> capacitiesMatrix;
     QVector<QPointF> nodes;
     QVector<int> highlightedPath;
     bool directed;
+    bool flow;
     int selectedNode = -1;
 };
 

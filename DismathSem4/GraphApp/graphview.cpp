@@ -2,12 +2,13 @@
 
 
 
-GraphView::GraphView(QWidget *parent) : QWidget(parent), directed(false) {
+GraphView::GraphView(QWidget *parent) : QWidget(parent), directed(false), flow(0) {
 }
 
 void GraphView::setAdjacencyMatrix(const QVector<QVector<int> > &matrix, bool isDirected) {
     adjacencyMatrix = matrix;
     directed = isDirected;
+    flow = 0;
     highlightedPath.clear();
 
     nodes.clear();
@@ -25,6 +26,16 @@ void GraphView::setAdjacencyMatrix(const QVector<QVector<int> > &matrix, bool is
     }
 
     update();
+}
+
+void GraphView::setWeightsMatrix(const QVector<QVector<int>> &matrix)
+{
+    weightsMatrix = matrix;
+}
+
+void GraphView::setCapacitiesMatrix(const QVector<QVector<int> > &matrix) {
+    capacitiesMatrix = matrix;
+    flow = 1;
 }
 
 void GraphView::highlightPath(const QVector<int> &path) {
@@ -97,19 +108,33 @@ void GraphView::paintEvent(QPaintEvent *event) {
                 }
 
                 QPointF midPoint = (adjustedFrom + adjustedTo) / 2;
-                QString weightLabel = QString::number(adjacencyMatrix[i][j]);
+                QString weightLabel = QString::number(weightsMatrix[i][j]);
                 QRectF weightRect(midPoint.x() - 15, midPoint.y() - 10, 30, 20);
                 painter.setBrush(QColor(255, 255, 255, 150));
                 painter.setPen(Qt::NoPen);
                 painter.drawRoundedRect(weightRect, 5, 5);
 
-                if (adjacencyMatrix[i][j] < 0) {
+                if (weightsMatrix[i][j] < 0) {
                     painter.setPen(Qt::red);
                 } else {
                     painter.setPen(Qt::blue);
                 }
 
                 painter.drawText(weightRect, Qt::AlignCenter, weightLabel);
+
+                if(flow){
+                    QString capacityLabel = QString::number(capacitiesMatrix[i][j]);
+                    if(capacitiesMatrix[i][j] == INT_MAX){
+                        capacityLabel = "\u221E";
+                    }
+                    QRectF capacityRect(midPoint.x() - 15, midPoint.y() + 15, 30, 20);
+                    painter.setBrush(QColor(255, 255, 255, 150));
+                    painter.setPen(Qt::NoPen);
+                    painter.drawRoundedRect(capacityRect, 5, 5);
+                    painter.setPen(Qt::darkGreen);
+                    painter.drawText(capacityRect, Qt::AlignCenter, capacityLabel);
+                }
+
                 painter.setPen(Qt::black);
             }
         }

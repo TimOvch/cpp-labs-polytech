@@ -45,8 +45,11 @@ public:
     void setData(const QVector<QVector<int>>& mat);
 
     void setCols(int newCols);
-
     void setRows(int newRows);
+
+    void insertRow(int index, const QVector<int>& row);
+
+    void insertColumn(int index, const QVector<int>& column);
 
 private:
     int rows, cols;

@@ -1,6 +1,6 @@
 #include "graphapp.h"
 
-GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1), graphsCount(0) {
+GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1), graphsCount(0),maxCapacity(0),minCostFlow(0),minCostFlowCost(0) {
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
@@ -169,6 +169,7 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     pathControlButton->setPopupMode(QToolButton::InstantPopup);
     toolBar->addWidget(pathControlButton);
 
+
     // DFS по ребрам
     QToolButton *dfsButton = new QToolButton(toolBar);
     dfsButton->setText("Обход ребер в глубину");
@@ -228,6 +229,23 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     toolBar->addWidget(dijkstraButton);
 
 
+    // СЕТЬ
+    QToolButton *flowButton = new QToolButton(toolBar);
+    flowButton->setText("Сеть");
+    QMenu *flowMenu = new QMenu(flowButton);
+    flowMenu->setStyleSheet(
+        "QMenu { padding: 10px; }"
+        "QMenu::item { padding: 10px 10px; }"
+        );
+
+    QAction *flowAction = new QAction("Сделать сетью", flowMenu);
+    connect(flowAction, &QAction::triggered, app, &GraphApp::makeFlow);
+    flowMenu->addAction(flowAction);
+
+    flowButton->setMenu(flowMenu);
+    flowButton->setPopupMode(QToolButton::InstantPopup);
+    toolBar->addWidget(flowButton);
+
 
     // ФАЙЛЫ
     QToolButton *fileControlButton = new QToolButton(toolBar);
@@ -286,7 +304,13 @@ void GraphApp::changeActiveGraph(const int &newActiveGraphIndex)
     dijkstraWithNegIterations = 0;
     dijkstraTable->clear();
     changeInfo();
-    view->setAdjacencyMatrix((graphs[activeGraphIndex])->getWeights().getData(),1);
+    view->setAdjacencyMatrix((graphs[activeGraphIndex])->getAdjacency().getData(),1);
+    view->setWeightsMatrix((graphs[activeGraphIndex])->getWeights().getData());
+
+    if((graphs[activeGraphIndex])->getFlow()){
+        view->setCapacitiesMatrix((graphs[activeGraphIndex])->getCapacities().getData());
+    }
+
     refactorSpinBoxes();
 }
 
@@ -333,6 +357,8 @@ void GraphApp::changeInfo()
                        "<tr><td style='padding: 5px; width: 40%;'><b>Отрицательные веса:</b></td><td style='padding: 5px;'>%6</td></tr>"
                        "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры:</b></td><td style='padding: 5px;'>%7</td></tr>"
                        "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры с отр. весами:</b></td><td style='padding: 5px;'>%8</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Максимальный поток:</b></td><td style='padding: 5px;'>%9</td></tr>"
+                       "<tr><td style='padding: 5px; width: 40%;'><b>Поток (%10) минимальной стоимости:</b></td><td style='padding: 5px;'>%11</td></tr>"
                        "</table>"
                        "</div>"
                        )
@@ -343,7 +369,10 @@ void GraphApp::changeInfo()
                        .arg(activeGraph->getConnected() ? "Да" : "Нет")
                        .arg(activeGraph->getNegativeWeights() ? "Да" : "Нет")
                        .arg(dijkstraIterations)
-                       .arg(dijkstraWithNegIterations);
+                       .arg(dijkstraWithNegIterations)
+                       .arg(maxCapacity)
+                       .arg(minCostFlow)
+                       .arg(minCostFlowCost);
 
     graphInfoDisplay->setText(info);
 }
@@ -613,6 +642,18 @@ void GraphApp::onDijkstraTableClicked(QTableWidgetItem *item) {
     if(path.empty()) return;
 
     view->highlightPath(path);
+}
+
+void GraphApp::makeFlow()
+{
+    if(graphs[activeGraphIndex]->getFlow()) return;
+    graphs[activeGraphIndex]->makeFlow();
+    changeActiveGraph(activeGraphIndex);
+
+    maxCapacity =  graphs[activeGraphIndex]->fordFulkerson(0, graphs[activeGraphIndex]->getP()-1);
+    minCostFlow = (graphs[activeGraphIndex]->minCostFlow(0, graphs[activeGraphIndex]->getP()-1)).first;
+    minCostFlowCost = (graphs[activeGraphIndex]->minCostFlow(0, graphs[activeGraphIndex]->getP()-1)).second;
+    changeInfo();
 }
 
 

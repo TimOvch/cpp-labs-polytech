@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <queue>
 #include <vector>
+#include <limits>
 
 int AbstractGraph::getP() const
 {
@@ -96,8 +97,36 @@ QPair<int, QVector<QVector<int>>> AbstractGraph::countPathsBFS(const int& startV
 
 
 AbstractGraph::AbstractGraph(const int &vershini)
-    :p(vershini), adjacency(p,p), weights(p,p), powers(p,0), q(0)
+    :p(vershini), adjacency(p,p), weights(p,p), capacities(p,p), powers(p,0), degrees(p,QVector<int>(2,0)), q(0), flow(0)
 {
+}
+
+void AbstractGraph::makeFlow()
+{
+    if(flow){
+        return;
+    }
+
+    flow = 1;
+
+    adjacency.insertColumn(0,QVector<int>(p,0));
+    adjacency.insertRow(0,QVector<int>(p+1,0));
+
+    weights.insertColumn(0,QVector<int>(p,0));
+    weights.insertRow(0,QVector<int>(p+1,0));
+
+    capacities.insertColumn(0,QVector<int>(p,0));
+    capacities.insertRow(0,QVector<int>(p+1,0));
+
+    p++;
+
+    for(int i = 1; i < p-1; i++){
+        if(degrees[i-1][1] == 0){
+            addEdge(0,i);
+            weights.setElement(0,i,0);
+            capacities.setElement(0,i,INT_MAX);
+        }
+    }
 }
 
 Matrix AbstractGraph::shimbellMethod(const int &times, const bool &max)
@@ -136,7 +165,7 @@ QString AbstractGraph::edgesDFS(const int &startVertex, const int &endVertex) {
             result += QString("(%1, %2) ").arg(u+1).arg(v+1);
 
             for (int i = 0; i < p; ++i) {
-                if (adjacency.getElem(v, i) == 1) {
+                if (adjacency.getElem(v, i) == 1 || adjacency.getElem(i, v) == 1) {
                     stack.push(qMakePair(v, i));
                 }
             }
@@ -244,6 +273,88 @@ QPair<QVector<int>, QVector<QVector<int>>> AbstractGraph::dijkstraWithNeg(const 
     return qMakePair(distances, paths);
 }
 
+int AbstractGraph::fordFulkerson(int source, int sink) {
+    int maxFlow = 0;
+
+    Matrix residualGraph = capacities;
+
+    QVector<int> parent(p, -1);
+
+    while (bfs(residualGraph, source, sink, parent)) {
+        int pathFlow = INT_MAX;
+        for (int v = sink; v != source; v = parent[v]) {
+            int u = parent[v];
+            pathFlow = std::min(pathFlow, residualGraph.getElem(u, v));
+        }
+
+        for (int v = sink; v != source; v = parent[v]) {
+            int u = parent[v];
+            residualGraph.setElement(u, v, residualGraph.getElem(u, v) - pathFlow);
+            residualGraph.setElement(v, u, residualGraph.getElem(v, u) + pathFlow);
+        }
+
+        maxFlow += pathFlow;
+    }
+
+    return maxFlow;
+}
+
+QPair<int, int> AbstractGraph::minCostFlow(int source, int sink) {
+    int maxFlow = fordFulkerson(source, sink);
+
+    int targetFlow = (2 * maxFlow) / 3;
+
+    Matrix residualGraph = capacities;
+    Matrix adjSave = adjacency;
+    int totalCost = 0;
+    int flowAchieved = 0;
+
+    while (flowAchieved < targetFlow) {
+        int iterations = 0;
+        QPair<QVector<int>, QVector<QVector<int>>> dijkstraResult = dijkstra(source, iterations);
+        QVector<int> distances = dijkstraResult.first;
+        QVector<QVector<int>> paths = dijkstraResult.second;
+
+        if (distances[sink] == INT_MAX) {
+            break;
+        }
+
+        int pathFlow = INT_MAX;
+        QVector<int> path = paths[sink];
+        for (int i = 0; i < path.size() - 1; ++i) {
+            int u = path[i];
+            int v = path[i + 1];
+            pathFlow = std::min(pathFlow, residualGraph.getElem(u, v));
+        }
+
+        pathFlow = std::min(pathFlow, targetFlow - flowAchieved);
+
+        for (int i = 0; i < path.size() - 1; ++i) {
+            int u = path[i];
+            int v = path[i + 1];
+            residualGraph.setElement(u, v, residualGraph.getElem(u, v) - pathFlow);
+            residualGraph.setElement(v, u, residualGraph.getElem(v, u) + pathFlow);
+            totalCost += pathFlow * weights.getElem(u, v);
+            if (residualGraph.getElem(u, v) == 0) {
+                residualGraph.setElement(u, v, 0);
+                residualGraph.setElement(v, u, 0);
+                adjacency.setElement(u, v, 0);
+                adjacency.setElement(v, u, 0);
+            }
+        }
+
+        flowAchieved += pathFlow;
+
+        if (pathFlow == 0) {
+            break;
+        }
+    }
+
+    adjacency = adjSave;
+
+    return qMakePair(flowAchieved, totalCost);
+}
+
 bool AbstractGraph::checkEdge(const int &startVertex, const int &endVertex){
     return adjacency.getElem(startVertex,endVertex)!=0;
 }
@@ -266,6 +377,42 @@ bool AbstractGraph::getAcycle() const
 bool AbstractGraph::getNegativeWeights() const
 {
     return negativeWeights;
+}
+
+bool AbstractGraph::getFlow() const
+{
+    return flow;
+}
+
+Matrix AbstractGraph::getCapacities() const
+{
+    return capacities;
+}
+
+bool AbstractGraph::bfs(const Matrix &residualGraph, int source, int sink, QVector<int> &parent) {
+    QVector<bool> visited(p, false);
+    QQueue<int> queue;
+    queue.enqueue(source);
+    visited[source] = true;
+    parent[source] = -1;
+
+    while (!queue.isEmpty()) {
+        int u = queue.dequeue();
+
+        for (int v = 0; v < p; ++v) {
+            if (!visited[v] && residualGraph.getElem(u, v) > 0) {
+                queue.enqueue(v);
+                parent[v] = u;
+                visited[v] = true;
+
+                if (v == sink) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 void AbstractGraph::generatePowers()

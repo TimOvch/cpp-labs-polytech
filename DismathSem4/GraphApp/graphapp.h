@@ -52,6 +52,9 @@ private:
     int activeGraphIndex;
     int dijkstraIterations;
     int dijkstraWithNegIterations;
+    int maxCapacity;
+    int minCostFlow;
+    int minCostFlowCost;
 
     QTableWidget *adjacencyTable;
     QTableWidget *shimbellTable;
@@ -97,6 +100,8 @@ private slots:
 
     void dijkstraAlgorithm();
     void onDijkstraTableClicked(QTableWidgetItem* item);
+
+    void makeFlow();
 };
 
 
