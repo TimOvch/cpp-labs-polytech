@@ -1,5 +1,6 @@
 #include "matrix.h"
 #include "algorithm"
+#include <cmath>
 
 Matrix::Matrix()
     : rows(0), cols(0)
@@ -144,6 +145,65 @@ Matrix Matrix::shimbelMult(const Matrix &other, const bool& if_max) const
     return result;
 }
 
+Matrix Matrix::minorMatrix(int excludeRow, int excludeCol) const {
+    if (rows < 2 || cols < 2) {
+        throw MatrixExeption("Ошибка: Минор можно вычислить только для матрицы размерностью больше 1x1");
+    }
+
+    Matrix minor(rows - 1, cols - 1);
+    int minorRow = 0;
+
+    for (int i = 0; i < rows; ++i) {
+        if (i == excludeRow) continue;
+        int minorCol = 0;
+
+        for (int j = 0; j < cols; ++j) {
+            if (j == excludeCol) continue;
+            minor.data[minorRow][minorCol] = data[i][j];
+            minorCol++;
+        }
+
+        minorRow++;
+    }
+
+    return minor;
+}
+
+int Matrix::determinant() const {
+    if (rows != cols) {
+        throw MatrixExeption("Ошибка: Определитель можно вычислить только для квадратной матрицы");
+    }
+
+    if (rows == 1) {
+        return data[0][0];
+    }
+
+    if (rows == 2) {
+        return data[0][0] * data[1][1] - data[0][1] * data[1][0];
+    }
+
+    int det = 0;
+    for (int col = 0; col < cols; ++col) {
+        Matrix minor = minorMatrix(0, col);
+        int sign = (col % 2 == 0) ? 1 : -1;
+        det += sign * data[0][col] * minor.determinant();
+    }
+
+    return det;
+}
+
+int Matrix::algebraicComplement(int row, int col) const {
+    if (rows != cols) {
+        throw MatrixExeption("Ошибка: Алгебраическое дополнение можно вычислить только для квадратной матрицы");
+    }
+
+    Matrix minor = this->minorMatrix(row, col);
+
+    int sign = ((row + col) % 2 == 0) ? 1 : -1;
+
+    return sign * minor.determinant();
+}
+
 int Matrix::getRows() const
 {
     return rows;
@@ -226,6 +286,18 @@ void Matrix::insertColumn(int index, const QVector<int> &column) {
         data[i].insert(index, column[i]);
     }
     cols++;
+}
+
+Matrix Matrix::transposed() const {
+    Matrix result(cols, rows);
+
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            result.data[j][i] = data[i][j];
+        }
+    }
+
+    return result;
 }
 
 Matrix::MatrixExeption::MatrixExeption(const std::string& error)

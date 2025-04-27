@@ -19,6 +19,11 @@ public:
     Matrix boolMult(const Matrix& other) const;
     Matrix ternMult(const Matrix& other) const;
     Matrix shimbelMult(const Matrix& other, const bool& if_max) const;
+    Matrix minorMatrix(int excludeRow, int excludeCol) const;
+    int determinant() const;
+    int algebraicComplement(int row, int col) const;
+
+
 
     friend QDebug operator<<(QDebug dbg, const Matrix& m);
 
@@ -50,6 +55,8 @@ public:
     void insertRow(int index, const QVector<int>& row);
 
     void insertColumn(int index, const QVector<int>& column);
+
+    Matrix transposed() const;
 
 private:
     int rows, cols;

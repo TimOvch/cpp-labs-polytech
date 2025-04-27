@@ -1,6 +1,7 @@
 #include "graphapp.h"
+#include <algorithm>
 
-GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1), graphsCount(0),maxCapacity(0),minCostFlow(0),minCostFlowCost(0) {
+GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1), graphsCount(0),maxCapacity(0),minCostFlow(0),minCostFlowCost(0), spanTreesNum(0) {
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
@@ -33,7 +34,7 @@ GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1),
     view->setMinimumSize(600, 600);
     upperLayout->addWidget(view);
 
-    QTabWidget *tabWidget = new QTabWidget;
+    QTabWidget *tabWidget = new QTabWidget();
     connect(tabWidget,&QTabWidget::currentChanged, this,&GraphApp::tabChanged);
     tabWidget->setMinimumSize(600, 500);
     HighlightNonEmptyDelegate* delegate = new HighlightNonEmptyDelegate(this);
@@ -46,13 +47,29 @@ GraphApp::GraphApp(QWidget *parent) : QMainWindow(parent), activeGraphIndex(-1),
     weightsTable = new QTableWidget();
     weightsTable->setItemDelegate(delegate);
     weightsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    capacityTable = new QTableWidget();
+    capacityTable->setItemDelegate(delegate);
+    capacityTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    costsTable = new QTableWidget();
+    costsTable->setItemDelegate(delegate);
+    costsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    kirchgoff = new QTableWidget();
+    kirchgoff->setItemDelegate(delegate);
+    kirchgoff->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    takenCapabilityTable = new QTableWidget();
+    takenCapabilityTable->setItemDelegate(delegate);
+    takenCapabilityTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     dijkstraTable = new QTableWidget();
     dijkstraTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     connect(dijkstraTable, &QTableWidget::itemClicked, this, &GraphApp::onDijkstraTableClicked);
-    tabWidget->addTab(adjacencyTable, "Матрица смежности");
-    tabWidget->addTab(weightsTable, "Матрица весов");
-    tabWidget->addTab(shimbellTable, "Метод Шимбелла");
-    tabWidget->addTab(dijkstraTable, "Алгоритм Дейкстры");
+    tabWidget->addTab(adjacencyTable, "Смежность");
+    tabWidget->addTab(weightsTable, "Веса");
+    tabWidget->addTab(capacityTable, "Потоки");
+    tabWidget->addTab(costsTable, "Стоимости");
+    tabWidget->addTab(kirchgoff, "Кирхгофа");
+    tabWidget->addTab(takenCapabilityTable, "Пущ. потоки");
+    tabWidget->addTab(shimbellTable, "Шимбелла");
+    tabWidget->addTab(dijkstraTable, "Дейкстры");
     tabWidget->addTab(graphInfoDisplay, "Информация");
 
     upperLayout->addWidget(tabWidget);
@@ -84,7 +101,7 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
 
     QWidgetAction *graphTypeAction = new QWidgetAction(graphControlMenu);
     graphTypeCombo = new QComboBox();
-    graphTypeCombo->addItems({"Ориентированный"});
+    graphTypeCombo->addItems({"Ориентированный","Неориентированный"});
     graphTypeAction->setDefaultWidget(graphTypeCombo);
     graphControlMenu->addAction(graphTypeAction);
 
@@ -106,6 +123,56 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     graphControlButton->setMenu(graphControlMenu);
     graphControlButton->setPopupMode(QToolButton::InstantPopup);
     toolBar->addWidget(graphControlButton);
+
+
+    //НАСТРОЙКА ВИЗУАЛИЗАЦИИ
+    QToolButton *viewButton = new QToolButton(toolBar);
+    viewButton->setText("Визуализация");
+    QMenu *viewMenu = new QMenu(viewButton);
+    viewMenu->setStyleSheet(
+        "QMenu { padding: 10px; }"
+        "QMenu::item { padding: 10px 10px; }"
+        );
+
+    QWidgetAction *showWeightsAction = new QWidgetAction(viewMenu);
+    showWeightsCheckBox = new QCheckBox("Отображение весов", this);
+    showWeightsCheckBox->setChecked(true);
+    connect(showWeightsCheckBox, &QCheckBox::checkStateChanged, this, &GraphApp::changeView);
+    showWeightsAction->setDefaultWidget(showWeightsCheckBox);
+    viewMenu->addAction(showWeightsAction);
+
+    QWidgetAction *showCapsAction = new QWidgetAction(viewMenu);
+    showCapacitiesCheckBox = new QCheckBox("Отображение пропускных способностей", this);
+    showCapacitiesCheckBox->setChecked(true);
+    connect(showCapacitiesCheckBox, &QCheckBox::checkStateChanged, this, &GraphApp::changeView);
+    showCapsAction->setDefaultWidget(showCapacitiesCheckBox);
+    viewMenu->addAction(showCapsAction);
+
+    QWidgetAction *showCostsAction = new QWidgetAction(viewMenu);
+    showCostsCheckBox = new QCheckBox("Отображение стоимостей", this);
+    showCostsCheckBox->setChecked(true);
+    connect(showCostsCheckBox, &QCheckBox::checkStateChanged, this, &GraphApp::changeView);
+    showCostsAction->setDefaultWidget(showCostsCheckBox);
+    viewMenu->addAction(showCostsAction);
+
+    QWidgetAction *showSetsAction = new QWidgetAction(viewMenu);
+    showSetsCheckBox = new QCheckBox("Отображение макс. независимых множеств ребер", this);
+    showSetsCheckBox->setChecked(false);
+    connect(showSetsCheckBox, &QCheckBox::checkStateChanged, this, &GraphApp::setsChanges);
+    showSetsAction->setDefaultWidget(showSetsCheckBox);
+    viewMenu->addAction(showSetsAction);
+
+    QWidgetAction *showTreeAction = new QWidgetAction(viewMenu);
+    showCombo = new QComboBox(this);
+    showCombo->addItem("Граф");
+    showCombo->addItem("Остов");
+    connect(showCombo, &QComboBox::currentIndexChanged, this, &GraphApp::changeTypeView);
+    showTreeAction->setDefaultWidget(showCombo);
+    viewMenu->addAction(showTreeAction);
+
+    viewButton->setMenu(viewMenu);
+    viewButton->setPopupMode(QToolButton::InstantPopup);
+    toolBar->addWidget(viewButton);
 
 
 
@@ -229,24 +296,6 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     toolBar->addWidget(dijkstraButton);
 
 
-    // СЕТЬ
-    QToolButton *flowButton = new QToolButton(toolBar);
-    flowButton->setText("Сеть");
-    QMenu *flowMenu = new QMenu(flowButton);
-    flowMenu->setStyleSheet(
-        "QMenu { padding: 10px; }"
-        "QMenu::item { padding: 10px 10px; }"
-        );
-
-    QAction *flowAction = new QAction("Сделать сетью", flowMenu);
-    connect(flowAction, &QAction::triggered, app, &GraphApp::makeFlow);
-    flowMenu->addAction(flowAction);
-
-    flowButton->setMenu(flowMenu);
-    flowButton->setPopupMode(QToolButton::InstantPopup);
-    toolBar->addWidget(flowButton);
-
-
     // ФАЙЛЫ
     QToolButton *fileControlButton = new QToolButton(toolBar);
     fileControlButton->setText("Файл");
@@ -267,6 +316,70 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     fileControlButton->setMenu(fileControlMenu);
     fileControlButton->setPopupMode(QToolButton::InstantPopup);
     toolBar->addWidget(fileControlButton);
+
+
+    // КОЛ-ВО ОСТОВОВ
+    QToolButton *spanNumButton = new QToolButton(toolBar);
+    spanNumButton->setText("Остовы");
+    QMenu *spanNumMenu = new QMenu(spanNumButton);
+    spanNumMenu->setStyleSheet(
+        "QMenu { padding: 10px; }"
+        "QMenu::item { padding: 10px 10px; }"
+        );
+
+    QWidgetAction *spanGetAction = new QWidgetAction(spanNumMenu);
+    QPushButton *spanBut = new QPushButton("Вычислить кол-во остов", this);
+    connect(spanBut,&QPushButton::clicked, this, &GraphApp::spanNum);
+    spanGetAction->setDefaultWidget(spanBut);
+    spanNumMenu->addAction(spanGetAction);
+
+    QWidgetAction *pruferWidgetAction = new QWidgetAction(spanNumMenu);
+    QPushButton *pruferWidgetBut = new QPushButton("Отобразить дерево по коду Прюфера", this);
+    connect(pruferWidgetBut,&QPushButton::clicked, this, &GraphApp::openPruferWidget);
+    pruferWidgetAction->setDefaultWidget(pruferWidgetBut);
+    spanNumMenu->addAction(pruferWidgetAction);
+
+    spanNumButton->setMenu(spanNumMenu);
+    spanNumButton->setPopupMode(QToolButton::InstantPopup);
+    toolBar->addWidget(spanNumButton);
+
+
+    // ЭЙЛЕРОВ И ГАМИЛЬТОНОВ
+    QToolButton *cycleButton = new QToolButton(toolBar);
+    cycleButton->setText("Циклы");
+    QMenu *cycleMenu = new QMenu(cycleButton);
+    cycleMenu->setStyleSheet(
+        "QMenu { padding: 10px; }"
+        "QMenu::item { padding: 10px 10px; }"
+        );
+
+    QWidgetAction *eulerAction = new QWidgetAction(cycleMenu);
+    QPushButton *eulerBut = new QPushButton("Дополнить до Эйлерова", this);
+    connect(eulerBut,&QPushButton::clicked, this, &GraphApp::makeEuler);
+    eulerAction->setDefaultWidget(eulerBut);
+    cycleMenu->addAction(eulerAction);
+
+    QWidgetAction *gamiltonAction = new QWidgetAction(cycleMenu);
+    QPushButton *gamiltonBut = new QPushButton("Дополнить до Гамильтонова", this);
+    connect(gamiltonBut,&QPushButton::clicked, this, &GraphApp::makeHamilton);
+    gamiltonAction->setDefaultWidget(gamiltonBut);
+    cycleMenu->addAction(gamiltonAction);
+
+    QWidgetAction *gamiltonShowAction = new QWidgetAction(cycleMenu);
+    QPushButton *gamiltonShowBut = new QPushButton("Показать Гамильтоновы циклы", this);
+    connect(gamiltonShowBut,&QPushButton::clicked, this, &GraphApp::showHamCycle);
+    gamiltonShowAction->setDefaultWidget(gamiltonShowBut);
+    cycleMenu->addAction(gamiltonShowAction);
+
+    QWidgetAction *eulerShowAction = new QWidgetAction(cycleMenu);
+    showCycleEdgesBox = new QCheckBox("Отображение дополненных ребер");
+    connect(showCycleEdgesBox,&QCheckBox::toggled, this, &GraphApp::showCycleEdges);
+    eulerShowAction->setDefaultWidget(showCycleEdgesBox);
+    cycleMenu->addAction(eulerShowAction);
+
+    cycleButton->setMenu(cycleMenu);
+    cycleButton->setPopupMode(QToolButton::InstantPopup);
+    toolBar->addWidget(cycleButton);
 }
 
 void GraphApp::refactorSpinBoxes()
@@ -282,36 +395,76 @@ void GraphApp::refactorSpinBoxes()
 void GraphApp::generateGraph()
 {
     graphsCount++;
-    if(graphTypeCombo->currentIndex() == 0){
-        AbstractGraph* newGraph = new OrientedGraph(verticesSpin->value(),negativeWeightsCheckBox->isChecked());
-        newGraph->setName("Новый граф");
-        newGraph->acycleGraphGenerate();
-        graphs.push_back(newGraph);
-        activeGraphIndex = graphs.size()-1;
-        changeActiveGraph(activeGraphIndex);
-    } else if(graphTypeCombo->currentIndex() == 1){
-        // Неориентированный
+    AbstractGraph* newGraph = new OrientedGraph(verticesSpin->value(),negativeWeightsCheckBox->isChecked());
+    newGraph->setName("Новый граф");
+    newGraph->acycleGraphGenerate();
+    graphs.push_back(newGraph);
+    activeGraphIndex = graphs.size()-1;
+    if(graphTypeCombo->currentIndex() == 1){
+        newGraph->makeUnoriented();
     }
+    changeActiveGraph(activeGraphIndex);
 }
 
 void GraphApp::changeActiveGraph(const int &newActiveGraphIndex)
 {
     activeGraphIndex = newActiveGraphIndex;
+    dijkstraIterations = 0;
+    dijkstraWithNegIterations = 0;
+    eulerCycle.clear();
+    dijkstraTable->clear();
+    bool isUnoriented = (graphs[activeGraphIndex])->getIsUnoriented();
+
+    view->setAdjacencyMatrix((graphs[activeGraphIndex])->getAdjacency().getData(),!isUnoriented);
+    view->setWeightsMatrix((graphs[activeGraphIndex])->getWeights().getData());
+
+    if(!isUnoriented){
+        QVector<QPair<int,int>> setGraph = graphs[activeGraphIndex]->maxEdgeIndependentSetDAG();
+        QVector<QPair<int,int>> setTree =  graphs[activeGraphIndex]->maxIndependentEdgeSetTree();
+
+        view->setEdgesSets(setGraph,setTree);
+
+        auto res = (graphs[activeGraphIndex]->minCostFlow());
+
+        maxCapacity =  graphs[activeGraphIndex]->fordFulkerson();
+        minCostFlow = res.first;
+        minCostFlowCost = res.second;
+        minSetGraph = setGraph.size();
+        minSetTree = setTree.size();
+
+        view->setCapacitiesMatrix((graphs[activeGraphIndex])->getCapacities().getData());
+        view->setCostsMatrix((graphs[activeGraphIndex])->getCosts().getData());
+
+        changeTable(capacityTable,(graphs[activeGraphIndex])->getCapacities().getData());
+        changeTable(costsTable,(graphs[activeGraphIndex])->getCosts().getData());
+        changeTable(takenCapabilityTable,graphs[activeGraphIndex]->getTakenCaps().getData());
+    }
+
+    auto prf = graphs[activeGraphIndex]->getPruferStr();
+    auto eul = graphs[activeGraphIndex]->isEuler();
+
+    spanTreesNum = 0;
+    primSum = graphs[activeGraphIndex]->getSum();    
+    prufersCode = prf.first;
+    prufersWeights = prf.second;
+    (graphs[activeGraphIndex])->countKirchhoff();
+    euler = eul.first;
+    halfEuler = eul.second;
+    qDebug() << "test1";
+    hamilCycle = (graphs[activeGraphIndex])->hamiltonCyclesStr();
+
+    if(euler){
+        eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    }
+
     changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
     changeTable(shimbellTable,(graphs[activeGraphIndex])->getWeights().getData());
     changeTable(weightsTable,(graphs[activeGraphIndex])->getWeights().getData());
-    dijkstraIterations = 0;
-    dijkstraWithNegIterations = 0;
-    dijkstraTable->clear();
-    changeInfo();
-    view->setAdjacencyMatrix((graphs[activeGraphIndex])->getAdjacency().getData(),1);
-    view->setWeightsMatrix((graphs[activeGraphIndex])->getWeights().getData());
-
-    if((graphs[activeGraphIndex])->getFlow()){
-        view->setCapacitiesMatrix((graphs[activeGraphIndex])->getCapacities().getData());
-    }
+    changeTable(kirchgoff,(graphs[activeGraphIndex])->getKirchhoff().getData());
 
     refactorSpinBoxes();
+    changeInfo();
+
 }
 
 void GraphApp::changeTable(QTableWidget *table, const QVector<QVector<int> > &matrix)
@@ -342,37 +495,109 @@ void GraphApp::changeTable(QTableWidget *table, const QVector<QVector<int> > &ma
     table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
+void GraphApp::changeView()
+{
+    view->setParametrs(showWeightsCheckBox->isChecked(),showCapacitiesCheckBox->isChecked(),showCostsCheckBox->isChecked());
+}
+
+void GraphApp::changeTypeView(int index)
+{
+    if(index == 0){
+        view->setAdjacencyMatrix((graphs[activeGraphIndex])->getAdjacency().getData(),!(graphs[activeGraphIndex])->getIsUnoriented());
+        view->setWeightsMatrix((graphs[activeGraphIndex])->getWeights().getData());
+        if(!graphs[activeGraphIndex]->getIsUnoriented()){
+            view->setCapacitiesMatrix((graphs[activeGraphIndex])->getCapacities().getData());
+            view->setCostsMatrix((graphs[activeGraphIndex])->getCosts().getData());
+        }
+    } else{
+        QPair<QVector<int>,QVector<int>> prufer = graphs[activeGraphIndex]->getPrufer();
+        view->setTreeFromPrufer(prufer.first,prufer.second);
+    }
+}
+
 void GraphApp::changeInfo()
 {
     AbstractGraph* activeGraph = graphs[activeGraphIndex];
-    QString info = QString(
-                       "<div style='padding: 10px;'>"
-                       "<h1 style='margin-bottom: 20px;'>Информация о графе</h1>"
-                       "<table style='width: 100%; border-collapse: collapse;'>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Количество вершин:</b></td><td style='padding: 5px;'>%1</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Количество ребер:</b></td><td style='padding: 5px;'>%2</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Тип графа:</b></td><td style='padding: 5px;'>%3</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Ациклический:</b></td><td style='padding: 5px;'>%4</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Связный:</b></td><td style='padding: 5px;'>%5</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Отрицательные веса:</b></td><td style='padding: 5px;'>%6</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры:</b></td><td style='padding: 5px;'>%7</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры с отр. весами:</b></td><td style='padding: 5px;'>%8</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Максимальный поток:</b></td><td style='padding: 5px;'>%9</td></tr>"
-                       "<tr><td style='padding: 5px; width: 40%;'><b>Поток (%10) минимальной стоимости:</b></td><td style='padding: 5px;'>%11</td></tr>"
-                       "</table>"
-                       "</div>"
-                       )
-                       .arg(activeGraph->getP())
-                       .arg(activeGraph->getQ())
-                       .arg(activeGraph->getType())
-                       .arg(activeGraph->getAcycle() ? "Да" : "Нет")
-                       .arg(activeGraph->getConnected() ? "Да" : "Нет")
-                       .arg(activeGraph->getNegativeWeights() ? "Да" : "Нет")
-                       .arg(dijkstraIterations)
-                       .arg(dijkstraWithNegIterations)
-                       .arg(maxCapacity)
-                       .arg(minCostFlow)
-                       .arg(minCostFlowCost);
+    QString info;
+
+    if(!activeGraph->getIsUnoriented()){
+        info = QString(
+                   "<div style='padding: 10px;'>"
+                   "<h1 style='margin-bottom: 20px;'>Информация о графе</h1>"
+                   "<table style='width: 100%; border-collapse: collapse;'>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Количество вершин:</b></td><td style='padding: 5px;'>%1</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Количество ребер:</b></td><td style='padding: 5px;'>%2</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Тип графа:</b></td><td style='padding: 5px;'>%3</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Ациклический:</b></td><td style='padding: 5px;'>%4</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Связный:</b></td><td style='padding: 5px;'>%5</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Отрицательные веса:</b></td><td style='padding: 5px;'>%6</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры:</b></td><td style='padding: 5px;'>%7</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры с отр. весами:</b></td><td style='padding: 5px;'>%8</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Максимальный поток:</b></td><td style='padding: 5px;'>%9</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Поток (%10) минимальной стоимости:</b></td><td style='padding: 5px;'>%11</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Кол-во остовных деревьев:</b></td><td style='padding: 5px;'>%12</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Суммарный вес остова:</b></td><td style='padding: 5px;'>%13</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Мощность мн-ва независимых ребер (граф):</b></td><td style='padding: 5px;'>%14</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Мощность мн-ва независимых ребер (дерево):</b></td><td style='padding: 5px;'>%15</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Код Прюфера для остова:</b></td><td style='padding: 5px;'>%16</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Веса кода Прюфера:</b></td><td style='padding: 5px;'>%17</td></tr>"
+                   "</table>"
+                   "</div>"
+                   )
+                   .arg(activeGraph->getP())
+                   .arg(activeGraph->getQ())
+                   .arg(activeGraph->getType())
+                   .arg(activeGraph->getAcycle() ? "Да" : "Нет")
+                   .arg(activeGraph->getConnected() ? "Да" : "Нет")
+                   .arg(activeGraph->getNegativeWeights() ? "Да" : "Нет")
+                   .arg(dijkstraIterations)
+                   .arg(dijkstraWithNegIterations)
+                   .arg(maxCapacity)
+                   .arg(minCostFlow)
+                   .arg(minCostFlowCost)
+                   .arg(spanTreesNum)
+                   .arg(primSum)
+                   .arg(minSetGraph)
+                   .arg(minSetTree)
+                   .arg(prufersCode)
+                   .arg(prufersWeights);
+    } else{
+        info = QString(
+                   "<div style='padding: 10px;'>"
+                   "<h1 style='margin-bottom: 20px;'>Информация о графе</h1>"
+                   "<table style='width: 100%; border-collapse: collapse;'>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Количество вершин:</b></td><td style='padding: 5px;'>%1</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Количество ребер:</b></td><td style='padding: 5px;'>%2</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Тип графа:</b></td><td style='padding: 5px;'>%3</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Связный:</b></td><td style='padding: 5px;'>%4</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Отрицательные веса:</b></td><td style='padding: 5px;'>%5</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры:</b></td><td style='padding: 5px;'>%6</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Итерации Дейкстры с отр. весами:</b></td><td style='padding: 5px;'>%7</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Кол-во остовных деревьев:</b></td><td style='padding: 5px;'>%8</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Суммарный вес остова:</b></td><td style='padding: 5px;'>%9</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Код Прюфера для остова:</b></td><td style='padding: 5px;'>%10</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Веса кода Прюфера:</b></td><td style='padding: 5px;'>%11</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Эйлеров:</b></td><td style='padding: 5px;'>%12</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Эйлеров цикл:</b></td><td style='padding: 5px;'>%13</td></tr>"
+                   "<tr><td style='padding: 5px; width: 40%;'><b>Гамильтонов:</b></td><td style='padding: 5px;'>%14</td></tr>"
+                   "</table>"
+                   "</div>"
+                   )
+                   .arg(activeGraph->getP())
+                   .arg(activeGraph->getQ())
+                   .arg(activeGraph->getType())
+                   .arg(activeGraph->getConnected() ? "Да" : "Нет")
+                   .arg(activeGraph->getNegativeWeights() ? "Да" : "Нет")
+                   .arg(dijkstraIterations)
+                   .arg(dijkstraWithNegIterations)
+                   .arg(spanTreesNum)
+                   .arg(primSum)
+                   .arg(prufersCode)
+                   .arg(prufersWeights)
+                   .arg(euler ? "Да" : "Нет")
+                   .arg(eulerCycle)
+                   .arg(hamilCycle);
+    }
 
     graphInfoDisplay->setText(info);
 }
@@ -382,6 +607,10 @@ void GraphApp::tabChanged(int index)
     view->clearHighlightedPath();
 }
 
+void GraphApp::setsChanges()
+{
+    view->setEdgesHighlight(showSetsCheckBox->isChecked());
+}
 
 void GraphApp::saveGraphToFile() {
     if (graphsCount != 0) {
@@ -644,18 +873,126 @@ void GraphApp::onDijkstraTableClicked(QTableWidgetItem *item) {
     view->highlightPath(path);
 }
 
-void GraphApp::makeFlow()
+void GraphApp::spanNum()
 {
-    if(graphs[activeGraphIndex]->getFlow()) return;
-    graphs[activeGraphIndex]->makeFlow();
-    changeActiveGraph(activeGraphIndex);
-
-    maxCapacity =  graphs[activeGraphIndex]->fordFulkerson(0, graphs[activeGraphIndex]->getP()-1);
-    minCostFlow = (graphs[activeGraphIndex]->minCostFlow(0, graphs[activeGraphIndex]->getP()-1)).first;
-    minCostFlowCost = (graphs[activeGraphIndex]->minCostFlow(0, graphs[activeGraphIndex]->getP()-1)).second;
+    spanTreesNum = graphs[activeGraphIndex]->getSpanTreesNum();
     changeInfo();
 }
 
+void GraphApp::openPruferWidget()
+{
+    PruferWidget *wid = new PruferWidget(this);
+    wid->exec();
+}
+
+void GraphApp::makeEuler()
+{
+    if(euler || !((graphs[activeGraphIndex])->getIsUnoriented())){
+        return;
+    }
+
+    bool possible;
+    auto dop = (graphs[activeGraphIndex])->makeEuler(possible);
+
+    if(!possible){
+        QMessageBox::warning(this,"Ошибка", "Граф невозможно привести к Эйлерову!");
+        return;
+    }
+
+    view->setCycleEdgesHighlight(1);
+    showCycleEdgesBox->setChecked(1);
+
+    view->setAdjacencyMatrix((graphs[activeGraphIndex])->getAdjacency().getData(),0);
+    view->setWeightsMatrix((graphs[activeGraphIndex])->getWeights().getData());
+
+    auto prf = graphs[activeGraphIndex]->getPruferStr();
+    auto eul = graphs[activeGraphIndex]->isEuler();
+
+    spanTreesNum = 0;
+    primSum = graphs[activeGraphIndex]->getSum();
+    prufersCode = prf.first;
+    prufersWeights = prf.second;
+    (graphs[activeGraphIndex])->countKirchhoff();
+    euler = eul.first;
+    halfEuler = eul.second;
+    eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    hamilCycle = (graphs[activeGraphIndex])->hamiltonCyclesStr();
+
+    changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
+    changeTable(shimbellTable,(graphs[activeGraphIndex])->getWeights().getData());
+    changeTable(weightsTable,(graphs[activeGraphIndex])->getWeights().getData());
+    changeTable(kirchgoff,(graphs[activeGraphIndex])->getKirchhoff().getData());
+
+    refactorSpinBoxes();
+    changeInfo();
+
+    view->highlightEdges(dop);
+}
+
+void GraphApp::makeHamilton()
+{
+    if(!((graphs[activeGraphIndex])->getIsUnoriented())){
+        return;
+    }
+
+    if(hamilCycle == "Да"){
+        return;
+    }
+
+    auto dop = (graphs[activeGraphIndex])->makeHamilton();
+
+    view->setCycleEdgesHighlight(1);
+    showCycleEdgesBox->setChecked(1);
+
+    view->setAdjacencyMatrix((graphs[activeGraphIndex])->getAdjacency().getData(),0);
+    view->setWeightsMatrix((graphs[activeGraphIndex])->getWeights().getData());
+
+    auto prf = graphs[activeGraphIndex]->getPruferStr();
+    auto eul = graphs[activeGraphIndex]->isEuler();
+
+    spanTreesNum = 0;
+    primSum = graphs[activeGraphIndex]->getSum();
+    prufersCode = prf.first;
+    prufersWeights = prf.second;
+    (graphs[activeGraphIndex])->countKirchhoff();
+    euler = eul.first;
+    halfEuler = eul.second;
+    eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    hamilCycle = (graphs[activeGraphIndex])->hamiltonCyclesStr();
+
+    changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
+    changeTable(shimbellTable,(graphs[activeGraphIndex])->getWeights().getData());
+    changeTable(weightsTable,(graphs[activeGraphIndex])->getWeights().getData());
+    changeTable(kirchgoff,(graphs[activeGraphIndex])->getKirchhoff().getData());
+
+    refactorSpinBoxes();
+    changeInfo();
+
+    view->highlightEdges(qMakePair(dop,QVector<QPair<int,int>>(0)));
+}
+
+void GraphApp::showHamCycle()
+{
+    auto res = (graphs[activeGraphIndex])->findHamiltonianCycles();
+
+    QVector<int> weights(res.size());
+    QVector<QVector<int>> paths(res.size());
+
+    for(int i = 0; i < res.size(); i++){
+        weights[i] = res[i].second;
+        paths[i] = res[i].first;
+    }
+
+    PathsDialog *dialog = new PathsDialog(paths, this,weights);
+    connect(dialog, &PathsDialog::pathSelected, this, &GraphApp::handlePathSelected);
+    dialog->exec();
+    view->clearHighlightedPath();
+}
+
+void GraphApp::showCycleEdges(bool high)
+{
+    view->setCycleEdgesHighlight(high);
+}
 
 // ДЕЛЕГАТ ДЛЯ ТАБЛИЦ -------------------------------------------------------------------------------
 
@@ -687,19 +1024,58 @@ void HighlightNonEmptyDelegate::paint(QPainter *painter, const QStyleOptionViewI
 
 // ДИАЛОГ ДЛЯ ПУТЕЙ ---------------------------------------------------------------------------------
 
-PathsDialog::PathsDialog(const QVector<QVector<int> > &paths, QWidget *parent)
-    : paths(paths) ,QDialog(parent) {
-    setWindowTitle("Маршруты между вершинами");
+void sortWithReference(QVector<QVector<int>> &refArray, QVector<int> &sortArray) {
+    QVector<int> indices(sortArray.size());
+    for (int i = 0; i < sortArray.size(); ++i) {
+        indices[i] = i;
+    }
+
+    std::sort(indices.begin(), indices.end(), [&](int a, int b) {
+        return sortArray[a] < sortArray[b];
+    });
+
+    QVector<int> sortedValues(sortArray.size());
+    QVector<QVector<int>> sortedRefArray(sortArray.size(), QVector<int>(refArray[0].size()));
+
+    for (int i = 0; i < indices.size(); ++i) {
+        sortedValues[i] = sortArray[indices[i]];
+        sortedRefArray[i] = refArray[indices[i]];
+    }
+
+    sortArray = sortedValues;
+    refArray = sortedRefArray;
+}
+
+PathsDialog::PathsDialog(const QVector<QVector<int>> &pths, QWidget *parent, QVector<int> wghts)
+    : paths(pths) ,QDialog(parent), weights(wghts) {
+    if(wghts.isEmpty()){
+        setWindowTitle("Маршруты между вершинами");
+    } else{
+        setWindowTitle("Гамильтоновы циклы");
+    }
+
     setMinimumSize(300, 200);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
 
-    QLabel *label = new QLabel("Возможные маршруты:", this);
+    QLabel *label;
+    if(wghts.isEmpty()){
+        label = new QLabel("Возможные маршруты:", this);
+    } else {
+        label = new QLabel("Гамильтоновы циклы и веса:", this);
+    }
     layout->addWidget(label);
 
+    if(!wghts.isEmpty()){
+        sortWithReference(paths,weights);
+    }
+
     listWidget = new QListWidget(this);
-    for (const QVector<int>& path : paths) {
-        QString pathString = "Маршрут: " + QString::fromStdString(formatPath(path));
+    for (int i = 0; i < paths.size(); i++) {
+        QString pathString = (wghts.isEmpty() ? "Маршрут: " : "Цикл: ") + QString::fromStdString(formatPath(paths[i]));
+        if(!wghts.isEmpty()){
+            pathString += " Вес: " + QString::number(weights[i]);
+        }
         listWidget->addItem(pathString);
     }
     layout->addWidget(listWidget);

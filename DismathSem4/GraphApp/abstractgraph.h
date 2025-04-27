@@ -12,22 +12,41 @@ class AbstractGraph
 {
 protected:
     int p,q;
+    int sum;
     Matrix adjacency;
     Matrix weights;
+    Matrix adjacencySave;
+    Matrix weightsSave;
     Matrix capacities;
+    Matrix costs;
+    Matrix TakenCaps;
+    Matrix Kirchhoff;
+    Matrix treeAdj;
     QVector<int> powers;
     QVector<int> level;
+    QVector<int> sources;
+    QVector<int> Prufer;
+    QVector<int> PruferWeights;
     QVector<QVector<int>> degrees;
+    QVector<int> unorDegrees;
     QString type;
     QString name;
     bool connected;
     bool acycle;
     bool negativeWeights;
-    bool flow;
+    bool isUnoriented;
+    bool hamilton;
 
     bool bfs(const Matrix& residualGraph, int source, int sink, QVector<int>& parent);
 
     void generatePowers();
+
+    void Prim();
+    void PruferCode();
+
+    void hamiltonianCycleUtil(QVector<int> &path, int pos, QVector<QPair<QVector<int>, int> > &cycles);
+
+    bool isSafe(int v, QVector<int> &path, int pos);
 
 public:
     AbstractGraph(const int& vershini);
@@ -36,15 +55,24 @@ public:
     virtual void acycleGraphGenerate() = 0;
 
     virtual void addEdge(const int& v, const int& u) = 0;
-    void makeFlow();
     Matrix shimbellMethod(const int& times, const bool& max);
     QString edgesDFS(const int& startVertex, const int& endVertex);
-    QPair<QVector<int>, QVector<QVector<int>>> dijkstra(const int& startVertex, int& iterations);
+    QPair<QVector<int>, QVector<QVector<int>>> dijkstra(const int& startVertex, int& iterations,const bool& by_weights=1);
     QPair<QVector<int>, QVector<QVector<int>>> dijkstraWithNeg(const int& startVertex, int& iterations);
-    int fordFulkerson(int source, int sink);
-    QPair<int, int> minCostFlow(int source, int sink);
-
-
+    int fordFulkerson();
+    QPair<int, int> minCostFlow();
+    int getSpanTreesNum();
+    QVector<QPair<int, int>> maxIndependentEdgeSetTree();
+    QVector<QPair<int, int>> maxEdgeIndependentSetDAG();
+    void countKirchhoff();
+    void makeUnoriented();
+    QPair<bool,bool> isEuler();
+    QPair<QVector<QPair<int,int>>,QVector<QPair<int,int>>> makeEuler(bool& possible);
+    QVector<int> eulerCycle();
+    QString eulerCycleStr();
+    QVector<QPair<QVector<int>, int>> findHamiltonianCycles();
+    QVector<QPair<int, int>> makeHamilton();
+    QString hamiltonCyclesStr();
 
     bool checkEdge(const int& startVertex, const int& endVertex);
 
@@ -77,31 +105,30 @@ public:
     bool getAcycle() const;
     bool getWeighted() const;
     bool getNegativeWeights() const;
-    bool getFlow() const;
     Matrix getCapacities() const;
+    Matrix getCosts() const;
+    Matrix getTakenCaps() const;
+    QPair<QVector<int>,QVector<int>> getPrufer();
+    Matrix getKirchhoff() const;
+    int getSum() const;
+    QPair<QString,QString> getPruferStr();
+    bool getIsUnoriented() const;
 };
 
 template <typename T>
 class IndexedHeap {
 public:
     IndexedHeap(int capacity);
-
     void push(int key, const T& value);
-
     std::pair<T, int> pop();
-
     void decreaseKey(int key, const T& newValue);
-
     bool empty() const;
 
 private:
     QVector<std::pair<T, int>> data;
     QVector<int> indices;
-
     void heapifyUp(int index);
-
     void heapifyDown(int index);
-
     void swapNodes(int i, int j);
 };
 

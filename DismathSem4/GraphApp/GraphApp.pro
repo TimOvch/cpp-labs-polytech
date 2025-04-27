@@ -16,6 +16,7 @@ SOURCES += \
     main.cpp \
     matrix.cpp \
     orientedgraph.cpp \
+    pruferwidget.cpp \
     unorientedgraph.cpp
 
 HEADERS += \
@@ -25,6 +26,7 @@ HEADERS += \
     graphview.h \
     matrix.h \
     orientedgraph.h \
+    pruferwidget.h \
     unorientedgraph.h
 
 FORMS +=

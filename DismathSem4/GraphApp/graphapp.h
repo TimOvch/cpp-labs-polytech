@@ -19,6 +19,7 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QTabWidget>
+#include <QTabBar>
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
@@ -33,11 +34,13 @@
 #include <sstream>
 #include <QCheckBox>
 #include <QHeaderView>
+#include <QStylePainter>
 
 #include "abstractgraph.h"
 #include "orientedgraph.h"
 #include "unorientedgraph.h"
 #include "graphview.h"
+#include "pruferwidget.h"
 
 class GraphApp : public QMainWindow {
     Q_OBJECT
@@ -55,11 +58,25 @@ private:
     int maxCapacity;
     int minCostFlow;
     int minCostFlowCost;
+    int spanTreesNum;
+    int primSum;
+    int minSetGraph;
+    int minSetTree;
+    bool euler;
+    bool halfEuler;
+    QString prufersCode;
+    QString prufersWeights;
+    QString eulerCycle;
+    QString hamilCycle;
 
     QTableWidget *adjacencyTable;
     QTableWidget *shimbellTable;
     QTableWidget *weightsTable;
     QTableWidget *dijkstraTable;
+    QTableWidget *capacityTable;
+    QTableWidget *costsTable;
+    QTableWidget *takenCapabilityTable;
+    QTableWidget *kirchgoff;
     QTextEdit *graphInfoDisplay;
     GraphView* view;
 
@@ -72,8 +89,14 @@ private:
     QSpinBox *dijkstraSpin;
     QComboBox *graphTypeCombo;
     QComboBox *shimbellCombo;
+    QComboBox *showCombo;
     QCheckBox *negativeWeightsCheckBox;
     QCheckBox *negativedijkstraCheckBox;
+    QCheckBox *showWeightsCheckBox;
+    QCheckBox *showCapacitiesCheckBox;
+    QCheckBox *showCostsCheckBox;
+    QCheckBox *showSetsCheckBox;
+    QCheckBox *showCycleEdgesBox;
 
     void setupToolBar(QToolBar *toolBar, GraphApp *app);
     void refactorSpinBoxes();
@@ -84,9 +107,12 @@ private slots:
 
     void changeActiveGraph(const int& newActiveGraphIndex);
     void changeTable(QTableWidget *table,const QVector<QVector<int> > &matrix);
+    void changeView();
+    void changeTypeView(int index);
     void changeInfo();
 
     void tabChanged(int index);
+    void setsChanges();
 
     void saveGraphToFile();
     void loadGraphFromFile();
@@ -101,7 +127,14 @@ private slots:
     void dijkstraAlgorithm();
     void onDijkstraTableClicked(QTableWidgetItem* item);
 
-    void makeFlow();
+    void spanNum();
+
+    void openPruferWidget();
+
+    void makeEuler();
+    void makeHamilton();
+    void showHamCycle();
+    void showCycleEdges(bool high);
 };
 
 
@@ -125,7 +158,7 @@ class PathsDialog : public QDialog {
     Q_OBJECT
 
 public:
-    PathsDialog(const QVector<QVector<int>>& paths, QWidget *parent = nullptr);
+    PathsDialog(const QVector<QVector<int>>& pths, QWidget *parent = nullptr, QVector<int> wghts = QVector<int>(0));
 
 signals:
     void pathSelected(const QVector<int>& path);
@@ -140,6 +173,8 @@ private slots:
 
 private:
     QVector<QVector<int>> paths;
+    QVector<int> weights;
 };
+
 
 #endif // GRAPHAPP_H
