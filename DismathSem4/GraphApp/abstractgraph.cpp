@@ -385,7 +385,7 @@ QVector<QPair<int, int> > AbstractGraph::maxIndependentEdgeSetTree() {
 
     std::function<void(int, int)> dfs = [&](int v, int parent) {
         for (int u = 0; u < p; ++u) {
-            if (treeAdj.getElem(v, u) != 0 && u != parent) {
+            if (treeAdj.getElem(v, u) == 1   && u != parent) {
                 dfs(u, v);
 
                 if (!used[v] && !used[u]) {
@@ -398,7 +398,7 @@ QVector<QPair<int, int> > AbstractGraph::maxIndependentEdgeSetTree() {
 
     dfs(0, -1);
 
-    qDebug() << result;
+    qDebug() << result << "youfd";
 
     return result;
 }
@@ -451,6 +451,7 @@ QVector<QPair<int, int> > AbstractGraph::maxEdgeIndependentSetDAG() {
             }
         }
         qDebug() << result;
+        qDebug() << result << "youfd2";
 
         return result;
     } else{
@@ -803,6 +804,9 @@ QPair<QVector<QPair<int,int>>,QVector<QPair<int,int>>> AbstractGraph::makeEuler(
                 adjacency.setElement(u,v,1);
                 adjacency.setElement(v,u,1);
                 int weight = abs(dist.getRandom());
+                while (weight == 0){
+                    weight = abs(dist.getRandom());
+                }
                 weights.setElement(u,v,weight);
                 weights.setElement(v,u,weight);
                 unorDegrees[u]++;
@@ -835,6 +839,9 @@ QPair<QVector<QPair<int,int>>,QVector<QPair<int,int>>> AbstractGraph::makeEuler(
                             adjacency.setElement(u,j,1);
                             adjacency.setElement(j,u,1);
                             int weight = abs(dist.getRandom());
+                            while (weight == 0){
+                                weight = abs(dist.getRandom());
+                            }
                             weights.setElement(u,j,weight);
                             weights.setElement(j,u,weight);
                             unorDegrees[u]++;
@@ -940,6 +947,9 @@ QVector<QPair<int, int> > AbstractGraph::makeHamilton()
             adjacency.setElement(u,v,1);
             adjacency.setElement(v,u,1);
             int weight = abs(dist.getRandom());
+            while (weight == 0){
+                weight = abs(dist.getRandom());
+            }
             weights.setElement(u,v,weight);
             weights.setElement(v,u,weight);
             unorDegrees[u]++;
@@ -956,6 +966,9 @@ QVector<QPair<int, int> > AbstractGraph::makeHamilton()
         adjacency.setElement(u,v,1);
         adjacency.setElement(v,u,1);
         int weight = abs(dist.getRandom());
+        while (weight == 0){
+            weight = abs(dist.getRandom());
+        }
         weights.setElement(u,v,weight);
         weights.setElement(v,u,weight);
         unorDegrees[u]++;

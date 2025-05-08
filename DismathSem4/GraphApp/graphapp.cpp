@@ -297,25 +297,25 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
 
 
     // ФАЙЛЫ
-    QToolButton *fileControlButton = new QToolButton(toolBar);
-    fileControlButton->setText("Файл");
-    QMenu *fileControlMenu = new QMenu(fileControlButton);
-    fileControlMenu->setStyleSheet(
-        "QMenu { padding: 10px; }"
-        "QMenu::item { padding: 10px 10px; }"
-        );
+    // QToolButton *fileControlButton = new QToolButton(toolBar);
+    // fileControlButton->setText("Файл");
+    // QMenu *fileControlMenu = new QMenu(fileControlButton);
+    // fileControlMenu->setStyleSheet(
+    //     "QMenu { padding: 10px; }"
+    //     "QMenu::item { padding: 10px 10px; }"
+    //     );
 
-    QAction *openAction = new QAction("Открыть из файла", fileControlMenu);
-    connect(openAction, &QAction::triggered, app, &GraphApp::loadGraphFromFile);
-    fileControlMenu->addAction(openAction);
+    // QAction *openAction = new QAction("Открыть из файла", fileControlMenu);
+    // connect(openAction, &QAction::triggered, app, &GraphApp::loadGraphFromFile);
+    // fileControlMenu->addAction(openAction);
 
-    QAction *saveAction = new QAction("Сохранить в файл", fileControlMenu);
-    connect(saveAction, &QAction::triggered, app, &GraphApp::saveGraphToFile);
-    fileControlMenu->addAction(saveAction);
+    // QAction *saveAction = new QAction("Сохранить в файл", fileControlMenu);
+    // connect(saveAction, &QAction::triggered, app, &GraphApp::saveGraphToFile);
+    // fileControlMenu->addAction(saveAction);
 
-    fileControlButton->setMenu(fileControlMenu);
-    fileControlButton->setPopupMode(QToolButton::InstantPopup);
-    toolBar->addWidget(fileControlButton);
+    // fileControlButton->setMenu(fileControlMenu);
+    // fileControlButton->setPopupMode(QToolButton::InstantPopup);
+    // toolBar->addWidget(fileControlButton);
 
 
     // КОЛ-ВО ОСТОВОВ
@@ -882,7 +882,7 @@ void GraphApp::spanNum()
 void GraphApp::openPruferWidget()
 {
     PruferWidget *wid = new PruferWidget(this);
-    wid->exec();
+    wid->show();
 }
 
 void GraphApp::makeEuler()
