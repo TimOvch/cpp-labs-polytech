@@ -22,10 +22,14 @@
 #include <algorithm>
 #include <QRandomGenerator>
 #include <QFile>
+#include <QTabWidget>
+#include <QTableWidget>
+#include <QHeaderView>
 #include "dictionary.h"
 #include "redblacktree.h"
 #include "fano.h"
 #include "distribution.h"
+#include "hashtable.h"
 
 struct Symbol {
     QString character;
@@ -46,18 +50,22 @@ private slots:
     void onSearchWord();
     void onLoadFromFile();
     void clearOutput();
-    void inorTravers();
     void bucketCount();
 
     void onGenerateFile();
     void onEncodeFile();
 
+    void onClear();
+
 private:
     QLineEdit *wordInput;
     QTextEdit *outputArea;
-    Dictionary *dictionary;
+    QTextEdit *treeArea;
+    HashTable<QString,int> dictionary;
     RedBlackTree *redBlackTree;
     QString originalText;
+    QTabWidget* tabwid;
+    QTableWidget* HT;
 
     QMap<QString, QString> codeMap;
 };

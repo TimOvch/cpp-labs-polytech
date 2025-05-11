@@ -111,7 +111,10 @@ AbstractGraph::AbstractGraph(const int &vershini)
     capacities(p,p), powers(p,0), degrees(p,QVector<int>(2,0)),
     q(0), costs(p,p), TakenCaps(p,p), Kirchhoff(p,p),
     treeAdj(p,p), isUnoriented(0), adjacencySave(p,p),
-    weightsSave(p,p), unorDegrees(p,0), hamilton(0)
+    weightsSave(p,p), unorDegrees(p,0), hamilton(0),
+    adjacencyReserved(p,p), weightsReserved(p,p),
+    degreesSave(p,QVector<int>(2,0)), unorDegreesSave(p,0),
+    qSave(0), saved(0)
 {
 
 }
@@ -398,8 +401,6 @@ QVector<QPair<int, int> > AbstractGraph::maxIndependentEdgeSetTree() {
 
     dfs(0, -1);
 
-    qDebug() << result << "youfd";
-
     return result;
 }
 
@@ -450,12 +451,8 @@ QVector<QPair<int, int> > AbstractGraph::maxEdgeIndependentSetDAG() {
                 }
             }
         }
-        qDebug() << result;
-        qDebug() << result << "youfd2";
 
         return result;
-    } else{
-
     }
 }
 
@@ -612,6 +609,27 @@ bool AbstractGraph::isSafe(int v, QVector<int> &path, int pos) {
 
 bool AbstractGraph::checkEdge(const int &startVertex, const int &endVertex){
     return adjacency.getElem(startVertex,endVertex)!=0;
+}
+
+void AbstractGraph::save()
+{
+    if(saved) return;
+    adjacencyReserved = adjacency;
+    weightsReserved = weights;
+    qSave = q;
+    unorDegreesSave  = unorDegrees;
+    degreesSave = degrees;
+    saved = 1;
+}
+
+void AbstractGraph::load()
+{
+    adjacency = adjacencyReserved;
+    weights = weightsReserved;
+    q = qSave;
+    unorDegrees = unorDegreesSave;
+    degrees = degreesSave;
+    saved = 0;
 }
 
 Matrix AbstractGraph::getWeights() const
@@ -786,6 +804,7 @@ QPair<QVector<QPair<int,int>>,QVector<QPair<int,int>>> AbstractGraph::makeEuler(
         return qMakePair(added,deleted);
     }
 
+    save();
     Distribution dist(5, 1.1);
 
     int counter = 0;
@@ -939,6 +958,8 @@ QVector<QPair<int, int> > AbstractGraph::makeHamilton()
         return added;
     }
 
+    save();
+
     Distribution dist(5,1.1);
 
     for(int i = 0; i < p-1; i++){
@@ -979,6 +1000,8 @@ QVector<QPair<int, int> > AbstractGraph::makeHamilton()
         added.append({u,v});
     }
 
+    PruferCode();
+
     return added;
 }
 
@@ -988,7 +1011,7 @@ QString AbstractGraph::hamiltonCyclesStr()
 
     auto hamCycles = findHamiltonianCycles();
 
-    if(hamCycles.isEmpty()){
+    if(hamCycles.isEmpty() || p == 2){
         return "Нет";
     } else{
         return "Да";

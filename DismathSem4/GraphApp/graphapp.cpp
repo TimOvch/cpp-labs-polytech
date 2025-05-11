@@ -377,6 +377,12 @@ void GraphApp::setupToolBar(QToolBar *toolBar, GraphApp *app) {
     eulerShowAction->setDefaultWidget(showCycleEdgesBox);
     cycleMenu->addAction(eulerShowAction);
 
+    QWidgetAction *loadAction = new QWidgetAction(cycleMenu);
+    QPushButton *loadBut = new QPushButton("Вернуть исходный граф", this);
+    connect(loadBut,&QPushButton::clicked, this, &GraphApp::loadGraph);
+    loadAction->setDefaultWidget(loadBut);
+    cycleMenu->addAction(loadAction);
+
     cycleButton->setMenu(cycleMenu);
     cycleButton->setPopupMode(QToolButton::InstantPopup);
     toolBar->addWidget(cycleButton);
@@ -455,6 +461,8 @@ void GraphApp::changeActiveGraph(const int &newActiveGraphIndex)
 
     if(euler){
         eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    } else{
+        eulerCycle = "";
     }
 
     changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
@@ -915,7 +923,11 @@ void GraphApp::makeEuler()
     (graphs[activeGraphIndex])->countKirchhoff();
     euler = eul.first;
     halfEuler = eul.second;
-    eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    if(euler){
+        eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    } else{
+        eulerCycle = "";
+    }
     hamilCycle = (graphs[activeGraphIndex])->hamiltonCyclesStr();
 
     changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
@@ -957,8 +969,13 @@ void GraphApp::makeHamilton()
     (graphs[activeGraphIndex])->countKirchhoff();
     euler = eul.first;
     halfEuler = eul.second;
-    eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
     hamilCycle = (graphs[activeGraphIndex])->hamiltonCyclesStr();
+
+    if(euler){
+        eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    } else{
+        eulerCycle = "";
+    }
 
     changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
     changeTable(shimbellTable,(graphs[activeGraphIndex])->getWeights().getData());
@@ -992,6 +1009,68 @@ void GraphApp::showHamCycle()
 void GraphApp::showCycleEdges(bool high)
 {
     view->setCycleEdgesHighlight(high);
+}
+
+void GraphApp::loadGraph()
+{
+    (graphs[activeGraphIndex])->load();
+
+    dijkstraIterations = 0;
+    dijkstraWithNegIterations = 0;
+    eulerCycle.clear();
+    dijkstraTable->clear();
+    bool isUnoriented = (graphs[activeGraphIndex])->getIsUnoriented();
+
+    view->setAdjacencyMatrix((graphs[activeGraphIndex])->getAdjacency().getData(),!isUnoriented);
+    view->setWeightsMatrix((graphs[activeGraphIndex])->getWeights().getData());
+
+    if(!isUnoriented){
+        QVector<QPair<int,int>> setGraph = graphs[activeGraphIndex]->maxEdgeIndependentSetDAG();
+        QVector<QPair<int,int>> setTree =  graphs[activeGraphIndex]->maxIndependentEdgeSetTree();
+
+        view->setEdgesSets(setGraph,setTree);
+
+        auto res = (graphs[activeGraphIndex]->minCostFlow());
+
+        maxCapacity =  graphs[activeGraphIndex]->fordFulkerson();
+        minCostFlow = res.first;
+        minCostFlowCost = res.second;
+        minSetGraph = setGraph.size();
+        minSetTree = setTree.size();
+
+        view->setCapacitiesMatrix((graphs[activeGraphIndex])->getCapacities().getData());
+        view->setCostsMatrix((graphs[activeGraphIndex])->getCosts().getData());
+
+        changeTable(capacityTable,(graphs[activeGraphIndex])->getCapacities().getData());
+        changeTable(costsTable,(graphs[activeGraphIndex])->getCosts().getData());
+        changeTable(takenCapabilityTable,graphs[activeGraphIndex]->getTakenCaps().getData());
+    }
+
+    auto prf = graphs[activeGraphIndex]->getPruferStr();
+    auto eul = graphs[activeGraphIndex]->isEuler();
+
+    spanTreesNum = 0;
+    primSum = graphs[activeGraphIndex]->getSum();
+    prufersCode = prf.first;
+    prufersWeights = prf.second;
+    (graphs[activeGraphIndex])->countKirchhoff();
+    euler = eul.first;
+    halfEuler = eul.second;
+    hamilCycle = (graphs[activeGraphIndex])->hamiltonCyclesStr();
+
+    if(euler){
+        eulerCycle = (graphs[activeGraphIndex])->eulerCycleStr();
+    } else{
+        eulerCycle = "";
+    }
+
+    changeTable(adjacencyTable,(graphs[activeGraphIndex])->getAdjacency().getData());
+    changeTable(shimbellTable,(graphs[activeGraphIndex])->getWeights().getData());
+    changeTable(weightsTable,(graphs[activeGraphIndex])->getWeights().getData());
+    changeTable(kirchgoff,(graphs[activeGraphIndex])->getKirchhoff().getData());
+
+    refactorSpinBoxes();
+    changeInfo();
 }
 
 // ДЕЛЕГАТ ДЛЯ ТАБЛИЦ -------------------------------------------------------------------------------

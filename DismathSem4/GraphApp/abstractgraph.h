@@ -12,11 +12,14 @@ class AbstractGraph
 {
 protected:
     int p,q;
+    int qSave;
     int sum;
     Matrix adjacency;
     Matrix weights;
     Matrix adjacencySave;
     Matrix weightsSave;
+    Matrix adjacencyReserved;
+    Matrix weightsReserved;
     Matrix capacities;
     Matrix costs;
     Matrix TakenCaps;
@@ -28,7 +31,9 @@ protected:
     QVector<int> Prufer;
     QVector<int> PruferWeights;
     QVector<QVector<int>> degrees;
+    QVector<QVector<int>> degreesSave;
     QVector<int> unorDegrees;
+    QVector<int> unorDegreesSave;
     QString type;
     QString name;
     bool connected;
@@ -36,6 +41,7 @@ protected:
     bool negativeWeights;
     bool isUnoriented;
     bool hamilton;
+    bool saved;
 
     bool bfs(const Matrix& residualGraph, int source, int sink, QVector<int>& parent);
 
@@ -75,6 +81,9 @@ public:
     QString hamiltonCyclesStr();
 
     bool checkEdge(const int& startVertex, const int& endVertex);
+
+    void save();
+    void load();
 
     class AbstractGraphExeption : public std::exception {
     private:

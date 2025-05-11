@@ -78,6 +78,22 @@ public:
         return size;
     }
 
+    size_t bucketSize(const int& ind){
+        return table[ind].size();
+    }
+
+    int getBucketSize(int i){
+        return table[i].size();
+    }
+
+    V getByBacketAndIndex(int bucket, int index){
+        return table[bucket][index].value;
+    }
+
+    K getKeyByBacketAndIndex(int bucket, int index){
+        return table[bucket][index].key;
+    }
+
     void clear() {
         for (size_t i = 0; i < capacity; ++i) {
             table[i].clear();

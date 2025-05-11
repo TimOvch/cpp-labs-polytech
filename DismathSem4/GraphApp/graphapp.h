@@ -135,6 +135,7 @@ private slots:
     void makeHamilton();
     void showHamCycle();
     void showCycleEdges(bool high);
+    void loadGraph();
 };
 
 

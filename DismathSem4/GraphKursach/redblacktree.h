@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QRegularExpression>
 #include <QTextStream>
+#include <QQueue>
 
 enum Color { RED, BLACK };
 
@@ -56,6 +57,49 @@ public:
     int countUniqueWords();
 
     bool isValidRBTree(Node* node, int& blackCount, int currentBlackCount);
+
+    QString getFirstThreeLevels() {
+        QString result;
+        if (root == nullptr) {
+            return result;
+        }
+
+        QQueue<std::tuple<Node*, QString>> queue;
+        queue.enqueue({root, "<none>"});
+        int currentLevel = 0;
+        int nodesAtCurrentLevel = 1;
+
+        while (!queue.isEmpty() && currentLevel < 4) {
+            QString levelOutput;
+            int nodesAtNextLevel = 0;
+
+            for (int i = 0; i < nodesAtCurrentLevel; ++i) {
+                auto [currentNode, parentKey] = queue.dequeue();
+                QString color = currentNode->color ? "B" : "R";
+
+                levelOutput += QString("[%1, %2, %3] ")
+                                   .arg(currentNode->key)
+                                   .arg(parentKey)
+                                   .arg(color);
+
+                if (currentNode->left != nullptr) {
+                    queue.enqueue({currentNode->left, currentNode->key});
+                    nodesAtNextLevel++;
+                }
+                if (currentNode->right != nullptr) {
+                    queue.enqueue({currentNode->right, currentNode->key});
+                    nodesAtNextLevel++;
+                }
+            }
+
+            // Добавляем вывод текущего уровня в общий результат и увеличиваем счетчик уровня
+            result += QString("Уровень %1: %2\n").arg(currentLevel).arg(levelOutput.trimmed());
+            nodesAtCurrentLevel = nodesAtNextLevel; // Переходим к следующему уровню
+            currentLevel++;
+        }
+
+        return result.trimmed();
+    }
 
 };
 

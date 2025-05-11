@@ -44,7 +44,6 @@ FanoEncoderDialog::FanoEncoderDialog(QWidget *parent)
     mainLayout->addWidget(inputFileLabel);
     mainLayout->addWidget(inputFileButton);
 
-
     mainLayout->addWidget(outputFileLabel);
     mainLayout->addWidget(outputFileButton);
 
@@ -121,7 +120,7 @@ void FanoEncoderDialog::compareFiles(const QString &file1Path, const QString &fi
         if (line1 != line2) {
             QMessageBox::information(this, "Результат сравнения",
                                      QString("Файлы различаются на позиции %1:\n\nФайл 1: \"%2\"\nФайл 2: \"%3\"")
-                                         .arg(position).arg(line1).arg(line2));
+                                         .arg(position).arg(line1.left(10)+QString("...")).arg(line2.left(10)+QString("...")));
             file1.close();
             file2.close();
             return;
