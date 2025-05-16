@@ -20,12 +20,15 @@ public:
     Node* right;
     Node* parent;
 
-    Node(QString key) : key(key), count(1), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
+    Node(QString key, Node* nil) :
+        key(key), count(1), color(RED),
+        left(nil), right(nil), parent(nil) {}
 };
 
 class RedBlackTree {
 private:
     Node* root;
+    Node* NIL;
 
     void leftRotate(Node* x);
     void rightRotate(Node* y);
@@ -92,9 +95,8 @@ public:
                 }
             }
 
-            // Добавляем вывод текущего уровня в общий результат и увеличиваем счетчик уровня
             result += QString("Уровень %1: %2\n").arg(currentLevel).arg(levelOutput.trimmed());
-            nodesAtCurrentLevel = nodesAtNextLevel; // Переходим к следующему уровню
+            nodesAtCurrentLevel = nodesAtNextLevel;
             currentLevel++;
         }
 

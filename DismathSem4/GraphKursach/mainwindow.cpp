@@ -113,6 +113,9 @@ void MainWindow::onAddWord() {
 void MainWindow::onRemoveWord() {
     QString word = wordInput->text();
     if (!word.isEmpty()) {
+        if(!dictionary.contains(word) || (redBlackTree->search(word) == nullptr)){
+            return;
+        }
         dictionary.remove(word);
         redBlackTree->remove(word);
         outputArea->append("Удалено: " + word);

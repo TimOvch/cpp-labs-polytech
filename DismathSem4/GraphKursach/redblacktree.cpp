@@ -164,6 +164,18 @@ void RedBlackTree::inorder(Node* node, QString& result) {
     inorder(node->right, result);
 }
 
+RedBlackTree::RedBlackTree() {
+    NIL = new Node("", nullptr);
+    NIL->color = BLACK;
+    NIL->left = NIL->right = NIL->parent = NIL;
+    root = NIL;
+}
+
+RedBlackTree::~RedBlackTree() {
+    clear();
+    delete NIL;
+}
+
 QString RedBlackTree::getAllWords() {
     QString result;
 

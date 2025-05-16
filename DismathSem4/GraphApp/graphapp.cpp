@@ -1151,7 +1151,12 @@ PathsDialog::PathsDialog(const QVector<QVector<int>> &pths, QWidget *parent, QVe
 
     listWidget = new QListWidget(this);
     for (int i = 0; i < paths.size(); i++) {
-        QString pathString = (wghts.isEmpty() ? "Маршрут: " : "Цикл: ") + QString::fromStdString(formatPath(paths[i]));
+        QString pathString;
+        if(i == 0){
+            pathString = (wghts.isEmpty() ? "Маршрут: " : "(Решение задачи коммивояжера) Цикл: ") + QString::fromStdString(formatPath(paths[i]));
+        } else{ // (Решение задачи коммивояжера)
+            pathString = (wghts.isEmpty() ? "Маршрут: " : "Цикл: ") + QString::fromStdString(formatPath(paths[i]));
+        }
         if(!wghts.isEmpty()){
             pathString += " Вес: " + QString::number(weights[i]);
         }
