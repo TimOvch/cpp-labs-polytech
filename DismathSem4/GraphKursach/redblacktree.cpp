@@ -164,18 +164,6 @@ void RedBlackTree::inorder(Node* node, QString& result) {
     inorder(node->right, result);
 }
 
-RedBlackTree::RedBlackTree() {
-    NIL = new Node("", nullptr);
-    NIL->color = BLACK;
-    NIL->left = NIL->right = NIL->parent = NIL;
-    root = NIL;
-}
-
-RedBlackTree::~RedBlackTree() {
-    clear();
-    delete NIL;
-}
-
 QString RedBlackTree::getAllWords() {
     QString result;
 
@@ -220,6 +208,69 @@ bool RedBlackTree::isValidRBTree(Node *node, int &blackCount, int currentBlackCo
 
     return isValidRBTree(node->left, blackCount, currentBlackCount) &&
            isValidRBTree(node->right, blackCount, currentBlackCount);
+}
+
+QString RedBlackTree::getFirstThreeLevels() {
+    QString result;
+    if (root == nullptr) {
+        result = "<p><b>Уровень 0</b>: [NIL, &lt;none&gt;, <span style='color:black;font-weight:bold;'>B</span>, root]</p>";
+        return result;
+    }
+
+    QQueue<std::tuple<Node*, QString, QString>> queue;
+    queue.enqueue({root, "&lt;none&gt;", "root"});
+    int currentLevel = 0;
+    int nodesAtCurrentLevel = 1;
+
+    while (!queue.isEmpty() && currentLevel < 4) {
+        QString levelOutput;
+        int nodesAtNextLevel = 0;
+
+        for (int i = 0; i < nodesAtCurrentLevel; ++i) {
+            auto [currentNode, parentKey, position] = queue.dequeue();
+
+            if (currentNode == nullptr) {
+                levelOutput += QString("[NIL, %1, <span style='color:black;font-weight:bold;'>B</span>, %2] ")
+                                   .arg(parentKey)
+                                   .arg(position);
+                continue;
+            }
+
+            QString colorText = (currentNode->color == BLACK)
+                                    ? "<span style='color:black;font-weight:bold;'>B</span>"
+                                    : "<span style='color:red;font-weight:bold;'>R</span>";
+
+            levelOutput += QString("[%1, %2, %3, %4] ")
+                               .arg(currentNode->key.toHtmlEscaped())
+                               .arg(parentKey)
+                               .arg(colorText)
+                               .arg(position);
+
+            if (currentNode->left != nullptr) {
+                queue.enqueue({currentNode->left, currentNode->key.toHtmlEscaped(), "L"});
+                nodesAtNextLevel++;
+            } else {
+                queue.enqueue({nullptr, currentNode->key.toHtmlEscaped(), "L"});
+                nodesAtNextLevel++;
+            }
+
+            if (currentNode->right != nullptr) {
+                queue.enqueue({currentNode->right, currentNode->key.toHtmlEscaped(), "R"});
+                nodesAtNextLevel++;
+            } else {
+                queue.enqueue({nullptr, currentNode->key.toHtmlEscaped(), "R"});
+                nodesAtNextLevel++;
+            }
+        }
+
+        result += QString("<p><b>Уровень %1</b>: %2</p>")
+                      .arg(currentLevel)
+                      .arg(levelOutput.trimmed());
+        nodesAtCurrentLevel = nodesAtNextLevel;
+        currentLevel++;
+    }
+
+    return result;
 }
 
 

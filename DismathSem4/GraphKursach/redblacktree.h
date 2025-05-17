@@ -20,15 +20,12 @@ public:
     Node* right;
     Node* parent;
 
-    Node(QString key, Node* nil) :
-        key(key), count(1), color(RED),
-        left(nil), right(nil), parent(nil) {}
+    Node(QString key) : key(key), count(1), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
 class RedBlackTree {
 private:
     Node* root;
-    Node* NIL;
 
     void leftRotate(Node* x);
     void rightRotate(Node* y);
@@ -61,47 +58,7 @@ public:
 
     bool isValidRBTree(Node* node, int& blackCount, int currentBlackCount);
 
-    QString getFirstThreeLevels() {
-        QString result;
-        if (root == nullptr) {
-            return result;
-        }
-
-        QQueue<std::tuple<Node*, QString>> queue;
-        queue.enqueue({root, "<none>"});
-        int currentLevel = 0;
-        int nodesAtCurrentLevel = 1;
-
-        while (!queue.isEmpty() && currentLevel < 4) {
-            QString levelOutput;
-            int nodesAtNextLevel = 0;
-
-            for (int i = 0; i < nodesAtCurrentLevel; ++i) {
-                auto [currentNode, parentKey] = queue.dequeue();
-                QString color = currentNode->color ? "B" : "R";
-
-                levelOutput += QString("[%1, %2, %3] ")
-                                   .arg(currentNode->key)
-                                   .arg(parentKey)
-                                   .arg(color);
-
-                if (currentNode->left != nullptr) {
-                    queue.enqueue({currentNode->left, currentNode->key});
-                    nodesAtNextLevel++;
-                }
-                if (currentNode->right != nullptr) {
-                    queue.enqueue({currentNode->right, currentNode->key});
-                    nodesAtNextLevel++;
-                }
-            }
-
-            result += QString("Уровень %1: %2\n").arg(currentLevel).arg(levelOutput.trimmed());
-            nodesAtCurrentLevel = nodesAtNextLevel;
-            currentLevel++;
-        }
-
-        return result.trimmed();
-    }
+    QString getFirstThreeLevels();
 
 };
 
