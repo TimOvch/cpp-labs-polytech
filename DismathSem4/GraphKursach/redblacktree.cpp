@@ -222,7 +222,7 @@ QString RedBlackTree::getFirstThreeLevels() {
     int currentLevel = 0;
     int nodesAtCurrentLevel = 1;
 
-    while (!queue.isEmpty() && currentLevel < 4) {
+    while (!queue.isEmpty() && currentLevel < 5) {
         QString levelOutput;
         int nodesAtNextLevel = 0;
 
